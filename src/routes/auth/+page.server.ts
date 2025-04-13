@@ -1,44 +1,51 @@
 import { hash, verify } from "@node-rs/argon2";
 import { encodeBase32LowerCase } from "@oslojs/encoding";
 import { fail, redirect } from "@sveltejs/kit";
+import { type } from "arktype";
 import { eq } from "drizzle-orm";
 
 import * as auth from "$lib/server/auth";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
+import { formDataParser } from "$lib/server/validator/utils";
 
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
-	if (event.locals.user) {
-		return redirect(302, "/demo/lucia");
-	}
+	if (!event.locals.user) return redirect(302, "/auth/login");
 	return {};
 };
+
+const AuthCredentials = type({
+	username: "3 < string <= 31",
+	password: "6 < string <= 255"
+});
+
+const formAuthCredentials = formDataParser.pipe(AuthCredentials);
 
 export const actions: Actions = {
 	login: async (event) => {
 		const formData = await event.request.formData();
-		const username = formData.get("username");
-		const password = formData.get("password");
+		const out = formAuthCredentials(formData);
 
-		if (!validateUsername(username)) {
+		if (out instanceof type.errors) {
 			return fail(400, {
-				message: "Invalid username (min 3, max 31 characters, alphanumeric only)"
+				message: "Invalid credentials",
+				errors: out.summary
 			});
 		}
-		if (!validatePassword(password)) {
-			return fail(400, { message: "Invalid password (min 6, max 255 characters)" });
-		}
 
-		const results = await db.select().from(table.user).where(eq(table.user.username, username));
+		const results = await db
+			.select()
+			.from(table.user)
+			.where(eq(table.user.username, out.username));
 
 		const existingUser = results.at(0);
 		if (!existingUser) {
 			return fail(400, { message: "Incorrect username or password" });
 		}
 
-		const validPassword = await verify(existingUser.passwordHash, password, {
+		const validPassword = await verify(existingUser.passwordHash, out.password, {
 			memoryCost: 19456,
 			timeCost: 2,
 			outputLen: 32,
@@ -52,23 +59,21 @@ export const actions: Actions = {
 		const session = await auth.createSession(sessionToken, existingUser.id);
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 
-		return redirect(302, "/demo/lucia");
+		return redirect(302, "/");
 	},
 	register: async (event) => {
 		const formData = await event.request.formData();
-		const username = formData.get("username");
-		const password = formData.get("password");
+		const out = formAuthCredentials(formData);
 
-		if (!validateUsername(username)) {
-			return fail(400, { message: "Invalid username" });
-		}
-		if (!validatePassword(password)) {
-			return fail(400, { message: "Invalid password" });
+		if (out instanceof type.errors) {
+			return fail(400, {
+				message: "Invalid credentials",
+				errors: out.summary
+			});
 		}
 
 		const userId = generateUserId();
-		const passwordHash = await hash(password, {
-			// recommended minimum parameters
+		const passwordHash = await hash(out.password, {
 			memoryCost: 19456,
 			timeCost: 2,
 			outputLen: 32,
@@ -76,15 +81,27 @@ export const actions: Actions = {
 		});
 
 		try {
-			await db.insert(table.user).values({ id: userId, username, passwordHash });
+			await db
+				.insert(table.user)
+				.values({ id: userId, username: out.username, passwordHash });
 
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, userId);
 			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 		} catch (e) {
+			console.error(e);
 			return fail(500, { message: "An error has occurred" });
 		}
-		return redirect(302, "/demo/lucia");
+
+		return redirect(302, "/");
+	},
+	logout: async (event) => {
+		if (!event.locals.session) return fail(401);
+
+		await auth.invalidateSession(event.locals.session.id);
+		auth.deleteSessionTokenCookie(event);
+
+		return redirect(302, "/auth/login");
 	}
 };
 
@@ -93,17 +110,4 @@ function generateUserId() {
 	const bytes = crypto.getRandomValues(new Uint8Array(15));
 	const id = encodeBase32LowerCase(bytes);
 	return id;
-}
-
-function validateUsername(username: unknown): username is string {
-	return (
-		typeof username === "string" &&
-		username.length >= 3 &&
-		username.length <= 31 &&
-		/^[a-z0-9_-]+$/.test(username)
-	);
-}
-
-function validatePassword(password: unknown): password is string {
-	return typeof password === "string" && password.length >= 6 && password.length <= 255;
 }

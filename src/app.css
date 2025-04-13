@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+@theme {
+	--color-background: #030303;
+	--color-foreground: #ededed;
+
+	--color-rosemi-50: #fcf4f6;
+	--color-rosemi-100: #f9eaed;
+	--color-rosemi-200: #f3d8de;
+	--color-rosemi-300: #e9b8c4;
+	--color-rosemi-400: #e09eaf;
+	--color-rosemi-500: #cb6884;
+	--color-rosemi-600: #b44a6d;
+	--color-rosemi-700: #97395b;
+	--color-rosemi-800: #7f3250;
+	--color-rosemi-900: #6d2e48;
+	--color-rosemi-950: #3c1524;
+}
+
+html,
+body {
+	@apply bg-background text-neutral-200;
+	font-family: "Inter Variable", sans-serif;
+	font-weight: 400;
+}
