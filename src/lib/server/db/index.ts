@@ -1,7 +1,8 @@
 import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
+
 import { dev } from "$app/environment";
 import { env } from "$env/dynamic/private";
-import { drizzle } from "drizzle-orm/libsql";
 
 import * as schema from "./schema";
 
