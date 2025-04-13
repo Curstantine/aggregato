@@ -16,17 +16,21 @@ export const load: PageServerLoad = async (event) => {
 	return {};
 };
 
-const AuthCredentials = type({
+const RegisterCredentials = type({
 	username: "3 < string <= 31",
-	password: "6 < string <= 255"
+	password: "6 < string <= 255",
+	email: "string.email"
 });
 
-const formAuthCredentials = formDataParser.pipe(AuthCredentials);
+const LoginCredentials = RegisterCredentials.pick("username", "password");
+
+const formRegisterCredentials = formDataParser.pipe(RegisterCredentials);
+const formLoginCredentials = formDataParser.pipe(LoginCredentials);
 
 export const actions: Actions = {
 	login: async (event) => {
 		const formData = await event.request.formData();
-		const out = formAuthCredentials(formData);
+		const out = formLoginCredentials(formData);
 
 		if (out instanceof type.errors) {
 			return fail(400, {
@@ -63,7 +67,7 @@ export const actions: Actions = {
 	},
 	register: async (event) => {
 		const formData = await event.request.formData();
-		const out = formAuthCredentials(formData);
+		const out = formRegisterCredentials(formData);
 
 		if (out instanceof type.errors) {
 			return fail(400, {
@@ -83,7 +87,7 @@ export const actions: Actions = {
 		try {
 			await db
 				.insert(table.user)
-				.values({ id: userId, username: out.username, passwordHash });
+				.values({ id: userId, username: out.username, email: out.email, passwordHash });
 
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, userId);
