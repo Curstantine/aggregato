@@ -1,9 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-	--color-background: #030303;
-	--color-foreground: #ededed;
-
 	--color-rosemi-50: #fcf4f6;
 	--color-rosemi-100: #f9eaed;
 	--color-rosemi-200: #f3d8de;
@@ -15,11 +12,30 @@
 	--color-rosemi-800: #7f3250;
 	--color-rosemi-900: #6d2e48;
 	--color-rosemi-950: #3c1524;
+
+	--transition-duration: 300ms;
+	--transition-duration-emphasized: 500ms;
+	--transition-duration-emphasized-decelerate: 400ms;
+	--transition-duration-emphasized-accelerate: 200ms;
+	--transition-duration-standard: 300ms;
+	--transition-duration-standard-decelerate: 250ms;
+	--transition-duration-standard-accelerate: 200ms;
+
+	--ease: cubic-bezier(0.2, 0, 0, 1);
+	--ease-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+	--ease-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+	--ease-standard: cubic-bezier(0.2, 0, 0, 1);
+	--ease-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+	--ease-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+}
+
+@plugin "@iconify/tailwind4" {
+	prefixes: material-symbols;
 }
 
 html,
 body {
-	@apply bg-background text-neutral-200;
+	@apply bg-neutral-950 text-neutral-200;
 	font-family: "Inter Variable", sans-serif;
 	font-weight: 400;
 }

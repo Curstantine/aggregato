@@ -9,5 +9,5 @@
 	"files.associations": {
 		"*.css": "tailwindcss"
 	},
-	"cSpell.words": ["arktype", "oslojs", "rosemi"]
+	"cSpell.words": ["arktype", "bezier", "iconify", "oslojs", "rosemi", "visiblity"]
 }

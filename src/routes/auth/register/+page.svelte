@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Input from "$lib/components/form/Input.svelte";
 	import Label from "$lib/components/form/Label.svelte";
+	import SecretInput from "$lib/components/form/SecretInput.svelte";
 
 	import { enhance } from "$app/forms";
 
@@ -10,23 +11,34 @@
 </script>
 
 <section class="mx-auto flex min-h-screen max-w-md flex-col justify-center">
-	<h1 class="text-xl font-semibold">Login</h1>
+	<h1 class="text-xl font-semibold">Register</h1>
 	<span class="text-sm text-neutral-400">
-		Sign-in to continue, or create an account to get started
+		Sign-up to get started, or login using your existing account
 	</span>
 
-	<form method="post" action="/auth?/login" use:enhance class="mt-6 space-y-3">
+	<form method="post" action="/auth?/register" use:enhance class="mt-6 space-y-3">
+		<Label label="Email">
+			<Input name="email" placeholder="rosemi@randomaccessiblemail.moe" />
+		</Label>
+
 		<Label label="Username">
 			<Input name="username" placeholder="Enter a username" />
 		</Label>
 
 		<Label label="Password">
-			<Input type="password" name="password" placeholder="Enter a password" />
+			<SecretInput type="password" name="password" placeholder="Enter a password" />
+		</Label>
+
+		<Label label="Confirm Password">
+			<SecretInput
+				type="password"
+				name="confirmPassword"
+				placeholder="Reenter your password"
+			/>
 		</Label>
 
 		<div class="flex justify-between">
-			{@render link("Don't have an account?", "/auth/register")}
-			{@render link("I forgot my password", "/auth/forgot")}
+			{@render link("Already have an account?", "/auth/login")}
 		</div>
 
 		<button

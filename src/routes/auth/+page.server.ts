@@ -17,9 +17,18 @@ export const load: PageServerLoad = async (event) => {
 };
 
 const RegisterCredentials = type({
+	email: "string.email",
 	username: "3 < string <= 31",
 	password: "6 < string <= 255",
-	email: "string.email"
+	confirmPassword: "string"
+}).narrow((data, ctx) => {
+	if (data.password === data.confirmPassword) return true;
+
+	return ctx.reject({
+		expected: "identical to password",
+		actual: "",
+		path: ["confirmPassword"]
+	});
 });
 
 const LoginCredentials = RegisterCredentials.pick("username", "password");
@@ -34,7 +43,7 @@ export const actions: Actions = {
 
 		if (out instanceof type.errors) {
 			return fail(400, {
-				message: "Invalid credentials",
+				message: "Invalid credential format",
 				errors: out.summary
 			});
 		}
