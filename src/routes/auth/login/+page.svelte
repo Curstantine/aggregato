@@ -1,6 +1,8 @@
 <script lang="ts">
+	import Button from "$lib/components/form/Button.svelte";
 	import Input from "$lib/components/form/Input.svelte";
 	import Label from "$lib/components/form/Label.svelte";
+	import SecretInput from "$lib/components/form/SecretInput.svelte";
 
 	import { enhance } from "$app/forms";
 
@@ -9,7 +11,7 @@
 	let { form }: { form: ActionData } = $props();
 </script>
 
-<section class="mx-auto flex min-h-screen max-w-md flex-col justify-center">
+<section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">
 	<h1 class="text-xl font-semibold">Login</h1>
 	<span class="text-sm text-neutral-400">
 		Sign-in to continue, or create an account to get started
@@ -21,7 +23,7 @@
 		</Label>
 
 		<Label label="Password">
-			<Input type="password" name="password" placeholder="Enter a password" />
+			<SecretInput type="password" name="password" placeholder="Enter a password" />
 		</Label>
 
 		<div class="flex justify-between">
@@ -29,12 +31,7 @@
 			{@render link("I forgot my password", "/auth/forgot")}
 		</div>
 
-		<button
-			type="submit"
-			class="mt-2 h-8 w-full rounded bg-rosemi-700 px-4 text-sm transition-colors hover:bg-rosemi-600"
-		>
-			Continue
-		</button>
+		<Button type="submit" class="mt-2">Continue</Button>
 	</form>
 </section>
 

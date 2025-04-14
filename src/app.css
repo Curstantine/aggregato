@@ -27,6 +27,8 @@
 	--ease-standard: cubic-bezier(0.2, 0, 0, 1);
 	--ease-standard-decelerate: cubic-bezier(0, 0, 0, 1);
 	--ease-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+
+	--shadow-glow: 0 0px 20px rgba(255, 255, 255, 0.35), 0 0px 65px rgba(255, 255, 255, 0.2);
 }
 
 @plugin "@iconify/tailwind4" {

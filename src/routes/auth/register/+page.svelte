@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from "$lib/components/form/Button.svelte";
 	import Input from "$lib/components/form/Input.svelte";
 	import Label from "$lib/components/form/Label.svelte";
 	import SecretInput from "$lib/components/form/SecretInput.svelte";
@@ -10,7 +11,7 @@
 	let { form }: { form: ActionData } = $props();
 </script>
 
-<section class="mx-auto flex min-h-screen max-w-md flex-col justify-center">
+<section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">
 	<h1 class="text-xl font-semibold">Register</h1>
 	<span class="text-sm text-neutral-400">
 		Sign-up to get started, or login using your existing account
@@ -41,12 +42,16 @@
 			{@render link("Already have an account?", "/auth/login")}
 		</div>
 
-		<button
-			type="submit"
-			class="mt-2 h-8 w-full rounded bg-rosemi-700 px-4 text-sm transition-colors hover:bg-rosemi-600"
-		>
-			Continue
-		</button>
+		<Button type="submit" class="mt-2">Continue</Button>
+
+		<div class="mt-6 flex flex-col rounded border border-neutral-600 p-2">
+			<h2 class="text-sm font-medium">Readme</h2>
+			<span class="text-xs leading-normal text-neutral-400">
+				The email address you provide will only be used for release notifications, and
+				account recovery. You are free to use whatever email you want, but make sure you
+				have the means to recover it in case you forget your password.
+			</span>
+		</div>
 	</form>
 </section>
 
