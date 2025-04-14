@@ -11,6 +11,10 @@
 	let { form }: { form: ActionData } = $props();
 </script>
 
+<svelte:head>
+	<title>Login - Aggregato</title>
+</svelte:head>
+
 <section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">
 	<h1 class="text-xl font-semibold">Register</h1>
 	<span class="text-sm text-neutral-400">
@@ -42,7 +46,7 @@
 			{@render link("Already have an account?", "/auth/login")}
 		</div>
 
-		<Button type="submit" class="mt-2">Continue</Button>
+		<Button type="submit" class="mt-2 w-full">Continue</Button>
 
 		<div class="mt-6 flex flex-col rounded border border-neutral-600 p-2">
 			<h2 class="text-sm font-medium">Readme</h2>

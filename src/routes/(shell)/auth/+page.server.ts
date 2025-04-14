@@ -9,12 +9,7 @@ import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
 import { formDataParser } from "$lib/server/validator/utils";
 
-import type { Actions, PageServerLoad } from "./$types";
-
-export const load: PageServerLoad = async (event) => {
-	if (!event.locals.user) return redirect(302, "/auth/login");
-	return {};
-};
+import type { Actions } from "./$types";
 
 const RegisterCredentials = type({
 	email: "string.email",

@@ -31,6 +31,17 @@
 	--shadow-glow: 0 0px 20px rgba(255, 255, 255, 0.35), 0 0px 65px rgba(255, 255, 255, 0.2);
 }
 
+@utility container {
+	margin-inline: auto;
+	padding-inline: 2rem;
+	max-width: none;
+
+	@variant 2xl {
+		padding-inline: 0rem;
+		max-width: 1536px;
+	}
+}
+
 @plugin "@iconify/tailwind4" {
 	prefixes: material-symbols;
 }
