@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { DropdownMenu, type DropdownMenuItemProps } from "bits-ui";
-	import type { Snippet } from "svelte";
 
 	interface Props extends Omit<DropdownMenuItemProps, "children" | "class"> {
 		label: string;
