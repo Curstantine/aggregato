@@ -11,7 +11,13 @@
 		"@ianvs/prettier-plugin-sort-imports"
 	],
 	"importOrder": [
+		"^node\\:.*$",
+		"",
 		"<THIRD_PARTY_MODULES>",
+		"",
+		"^\\$lib/client/(.*)$",
+		"",
+		"^\\$lib/components/(.*)$",
 		"",
 		"^\\$lib/(.*)$",
 		"",

@@ -1,10 +1,16 @@
 <script lang="ts">
-	import { DropdownMenu as DropdownMenuPrimitive, Popover } from "bits-ui";
+	import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
 
-	import DropdownMenu from "$lib/components/DropdownMenu.svelte";
-	import DropdownMenuItem from "$lib/components/DropdownMenuItem.svelte";
+	import { setThemeMode } from "$lib/client/theme.svelte";
+
+	import DropdownMenu from "$lib/components/DropdownMenu/Content.svelte";
+	import DropdownMenuItem from "$lib/components/DropdownMenu/Item.svelte";
 	import Button from "$lib/components/form/Button.svelte";
 	import Input from "$lib/components/form/Input.svelte";
+
+	function onThemeModeSelect() {
+		// setThemeMode()
+	}
 </script>
 
 <nav class="sticky top-0 border-b border-b-neutral-800 shadow-neutral-950/75 backdrop-blur-2xl">
@@ -29,7 +35,7 @@
 				<span class="iconify size-5 material-symbols--notifications-outline-rounded"></span>
 			</Button>
 
-			<DropdownMenu open contentProps={{ sideOffset: 16, align: "end" }}>
+			<DropdownMenu contentProps={{ sideOffset: 16, align: "end", class: "min-w-52" }}>
 				{#snippet button(props)}
 					<Button
 						{...props}
@@ -52,7 +58,13 @@
 					<DropdownMenuItem label="Logout" icon="material-symbols--logout-rounded" />
 				</DropdownMenuPrimitive.Group>
 
-				<DropdownMenuPrimitive.Group></DropdownMenuPrimitive.Group>
+				<DropdownMenuPrimitive.Group>
+					<DropdownMenuItem
+						label="Go dark"
+						icon="material-symbols--dark-mode-rounded"
+						onSelect={onThemeModeSelect}
+					/>
+				</DropdownMenuPrimitive.Group>
 			</DropdownMenu>
 		</div>
 	</div>

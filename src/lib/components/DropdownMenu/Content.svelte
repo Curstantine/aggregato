@@ -24,7 +24,12 @@
 	<DropdownMenu.Portal>
 		<DropdownMenu.Content
 			{...contentProps}
-			class="min-w-48 rounded border border-neutral-800 bg-neutral-950/50 text-sm shadow-lg backdrop-blur-lg first:rounded-t last:rounded-b"
+			class={[
+				"rounded bg-neutral-950/50 text-sm shadow-lg backdrop-blur-lg",
+				"[&>*:first-child>*:first-child]:rounded-t [&>*:last-child>*:last-child]:rounded-b",
+				"border border-neutral-800 [&>div[role='group']:last-of-type>*]:border-b-0 [&>div[role='group']>*]:border-b [&>div[role='group']>*]:border-b-neutral-800",
+				contentProps?.class
+			]}
 		>
 			{@render children?.()}
 		</DropdownMenu.Content>
