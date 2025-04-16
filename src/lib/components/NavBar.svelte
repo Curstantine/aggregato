@@ -118,7 +118,6 @@
 				size="square"
 				aria-label="Open profile menu"
 				fullyRounded
-				class="grid grid-cols-1 place-items-center"
 			>
 				<span class="iconify size-5 material-symbols--person-outline-rounded"></span>
 			</Button>
