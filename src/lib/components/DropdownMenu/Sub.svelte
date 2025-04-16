@@ -31,7 +31,8 @@
 	<DropdownMenu.SubContent
 		{...contentProps}
 		class={[
-			"rounded bg-neutral-950/50 text-sm shadow-lg backdrop-blur-lg",
+			"rounded text-sm shadow-lg",
+			"before:absolute before:inset-0 before:left-0 before:-z-10 before:content-normal before:rounded before:bg-neutral-950/50 before:backdrop-blur-lg",
 			"[&>*:first-child]:rounded-t [&>*:last-child]:rounded-b",
 			"border border-neutral-800 [&>*]:border-b [&>*]:border-b-neutral-800 [&>*:last-child]:border-b-0",
 			contentProps?.class
