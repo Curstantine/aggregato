@@ -3,7 +3,7 @@
 	import type { Snippet } from "svelte";
 
 	type Intent = "ghost" | "rosemi" | "border";
-	type Size = "default" | "square";
+	type Size = "default" | "square" | "squareSmall";
 
 	type Props = ButtonRootProps & {
 		children: Snippet;
@@ -19,8 +19,9 @@
 	};
 
 	const sizeStyles: Record<Size, string> = {
-		default: "h-9 sm:h-8",
-		square: "size-9 sm:size-8"
+		default: "h-9 sm:h-8 px-4",
+		square: "grid place-items-center grid-cols-1 size-9 sm:size-8",
+		squareSmall: "grid place-items-center grid-cols-1 size-7 sm:size-6"
 	};
 
 	const {
@@ -36,7 +37,7 @@
 <Button.Root
 	{...rest}
 	class={[
-		"px-4 text-sm transition-[box-shadow,color,background-color]",
+		"text-sm transition-all",
 		fullyRounded ? "rounded-full" : "rounded",
 		intentStyles[intent],
 		sizeStyles[size],

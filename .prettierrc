@@ -17,6 +17,7 @@
 		"",
 		"^\\$lib/client/(.*)$",
 		"",
+		"^\\$lib/components/(.*[^.(js|ts|svelte)])$",
 		"^\\$lib/components/(.*)$",
 		"",
 		"^\\$lib/(.*)$",

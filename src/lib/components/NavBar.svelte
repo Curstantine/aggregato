@@ -1,6 +1,11 @@
 <script lang="ts">
-	import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
+	import {
+		DropdownMenu as DropdownMenuPrimitive,
+		Popover as PopoverPrimitive,
+		useId
+	} from "bits-ui";
 
+	import { notificationState } from "$lib/client/notification.svelte";
 	import { setThemeMode, themeState, type ThemeMode } from "$lib/client/theme.svelte";
 
 	import {
@@ -10,8 +15,10 @@
 		DropdownMenuRadioItem,
 		DropdownMenuSub
 	} from "$lib/components/DropdownMenu";
+	import { Popover } from "$lib/components/Popover";
 	import Button from "$lib/components/form/Button.svelte";
 	import Input from "$lib/components/form/Input.svelte";
+	import ProgressBar from "$lib/components/ProgressBar.svelte";
 </script>
 
 <nav class="sticky top-0 border-b border-b-neutral-800 shadow-neutral-950/75 backdrop-blur-2xl">
@@ -27,15 +34,7 @@
 		{@render search("mr-2 ml-4 hidden md:block")}
 
 		<div class="flex gap-1">
-			<Button
-				intent="ghost"
-				size="square"
-				aria-label="Open notifications"
-				class="grid grid-cols-1 place-items-center"
-			>
-				<span class="iconify size-5 material-symbols--notifications-outline-rounded"></span>
-			</Button>
-
+			{@render notifications()}
 			{@render profile()}
 		</div>
 	</div>
@@ -52,6 +51,62 @@
 			class="absolute top-1.5 right-1.5 iconify size-5 text-neutral-500 transition-colors material-symbols--search-rounded peer-focus:text-neutral-100"
 		></span>
 	</form>
+{/snippet}
+
+{#snippet notifications()}
+	<Popover
+		contentProps={{
+			sideOffset: 16,
+			align: "end",
+			class: "in-h-24 botched-scroll relative max-h-90 min-w-80 overflow-y-auto rounded border border-neutral-800 "
+		}}
+	>
+		{#snippet button(props)}
+			<Button
+				{...props}
+				intent="ghost"
+				size="square"
+				aria-label="Open notifications"
+				class="group grid grid-cols-1 place-items-center aria-expanded:text-rosemi-500"
+			>
+				<span
+					class="iconify size-5 transition-transform material-symbols--notifications-outline-rounded group-[[aria-expanded='true']]:rotate-4"
+				></span>
+			</Button>
+		{/snippet}
+
+		<div
+			class="sticky top-0 z-10 flex h-8 items-center justify-between border-b border-b-neutral-800 bg-neutral-950 pr-1 pl-2"
+		>
+			<span class="text-xs font-medium">Notifications</span>
+			<PopoverPrimitive.Close aria-label="Close notification popover">
+				{#snippet child({ props })}
+					<Button {...props} size="squareSmall" intent="ghost">
+						<span class="iconify size-5 material-symbols--close-small-outline-rounded"
+						></span>
+					</Button>
+				{/snippet}
+			</PopoverPrimitive.Close>
+			<div class="absolute inset-x-0 top-8 z-10 h-4 bg-gradient-to-b from-neutral-950"></div>
+		</div>
+
+		<div class="flex flex-col">
+			{#each notificationState.active as notification}
+				{@const id = useId()}
+				<div class="flex flex-col border-b border-neutral-800 p-2 last:border-b-0">
+					<span {id} class="text-sm">{notification.label}</span>
+					<span class="mb-1 text-xs text-neutral-400">
+						{notification.progress} of {notification.endStep}
+					</span>
+					<ProgressBar
+						aria-labelledby={id}
+						value={notification.progress}
+						max={notification.endStep}
+					/>
+				</div>
+			{/each}
+		</div>
+	</Popover>
 {/snippet}
 
 {#snippet profile()}
