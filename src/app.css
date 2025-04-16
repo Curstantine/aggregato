@@ -48,8 +48,7 @@
 	prefixes: material-symbols;
 }
 
-html,
-body {
+html {
 	@apply bg-neutral-950 text-neutral-200;
 	font-family: "Inter Variable", sans-serif;
 	font-weight: 400;

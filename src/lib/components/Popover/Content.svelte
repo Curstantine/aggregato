@@ -22,7 +22,10 @@
 		{/snippet}
 	</Popover.Trigger>
 	<Popover.Portal>
-		<Popover.Content {...contentProps}>
+		<Popover.Content
+			{...contentProps}
+			class={["bg-neutral-950/50  shadow-lg backdrop-blur-lg", contentProps?.class]}
+		>
 			{@render children?.()}
 		</Popover.Content>
 	</Popover.Portal>
