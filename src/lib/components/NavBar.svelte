@@ -46,7 +46,7 @@
 
 {#snippet search(klass: string)}
 	<form action="/search" class={["relative", klass]}>
-		<Input type="text" name="q" placeholder="Search" class="peer w-64" />
+		<Input type="text" name="q" placeholder="Search" class="peer w-64 bg-neutral-950/50" />
 		<span
 			class="absolute top-1.5 right-1.5 iconify size-5 text-neutral-500 transition-colors material-symbols--search-rounded peer-focus:text-neutral-100"
 		></span>

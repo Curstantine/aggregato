@@ -10,8 +10,10 @@
 		"*.css": "tailwindcss"
 	},
 	"cSpell.words": [
+		"ListenBrainz",
 		"Aggregato",
 		"arktype",
+		"Bandcamp",
 		"bezier",
 		"iconify",
 		"klass",

@@ -13,7 +13,7 @@
 	};
 
 	const intentStyles: Record<Intent, string> = {
-		rosemi: "border-1 border-rosemi-600 bg-rosemi-700 shadow-glow shadow-rosemi-700/20 hover:shadow-rosemi-700/30",
+		rosemi: "border-1 border-rosemi-500 bg-rosemi-700 shadow-glow shadow-rosemi-700/20 hover:shadow-rosemi-700/30",
 		ghost: "hover:bg-neutral-900",
 		border: "border border-neutral-800 bg-neutral-900"
 	};
