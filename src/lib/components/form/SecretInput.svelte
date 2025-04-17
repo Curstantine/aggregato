@@ -12,12 +12,12 @@
 	<input
 		{...props}
 		type={inputType}
-		class="h-9 rounded border border-neutral-800 bg-neutral-900 px-2 text-neutral-100 transition-colors placeholder:text-neutral-500 focus-visible:border-rosemi-500 focus-visible:outline-none sm:h-8"
+		class="h-9 rounded border border-border bg-background-2 px-2 text-foreground transition-colors placeholder:text-muted-foreground focus-visible:border-rosemi-500 focus-visible:outline-none sm:h-8"
 	/>
 
 	<label
 		aria-label={`${showValue ? "Hide" : "Show"} ${props.name} value`}
-		class="absolute top-1 right-1 grid size-7 place-items-center rounded bg-neutral-900 text-neutral-50 shadow transition-colors hover:bg-neutral-950 sm:size-6"
+		class="absolute top-1 right-1 grid size-7 place-items-center rounded bg-background-2 text-foreground shadow transition-colors hover:bg-background sm:size-6"
 	>
 		<span
 			class={[

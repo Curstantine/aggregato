@@ -17,7 +17,7 @@
 
 <section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">
 	<h1 class="text-xl font-semibold">Login</h1>
-	<span class="text-sm text-neutral-400">
+	<span class="text-muted-foreground text-sm">
 		Sign-in to continue, or create an account to get started
 	</span>
 
@@ -40,5 +40,7 @@
 </section>
 
 {#snippet link(label: string, href: string)}
-	<a {href} class="text-xs text-neutral-400 transition-colors hover:text-neutral-300">{label}</a>
+	<a {href} class="text-muted-foreground hover:text-foreground-2 text-xs transition-colors"
+		>{label}</a
+	>
 {/snippet}

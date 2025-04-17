@@ -1,6 +1,20 @@
 @import "tailwindcss";
 
 @theme {
+	--color-*: initial;
+
+	--color-neutral-50: oklch(0.985 0 0);
+	--color-neutral-100: oklch(0.97 0 0);
+	--color-neutral-200: oklch(0.922 0 0);
+	--color-neutral-300: oklch(0.87 0 0);
+	--color-neutral-400: oklch(0.708 0 0);
+	--color-neutral-500: oklch(0.556 0 0);
+	--color-neutral-600: oklch(0.439 0 0);
+	--color-neutral-700: oklch(0.371 0 0);
+	--color-neutral-800: oklch(0.269 0 0);
+	--color-neutral-900: oklch(0.205 0 0);
+	--color-neutral-950: oklch(0.145 0 0);
+
 	--color-rosemi-50: #fcf4f6;
 	--color-rosemi-100: #f9eaed;
 	--color-rosemi-200: #f3d8de;
@@ -31,7 +45,37 @@
 	--shadow-glow: 0 0px 20px rgba(255, 255, 255, 0.35), 0 0px 65px rgba(255, 255, 255, 0.2);
 }
 
-@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+html[data-theme="light"] {
+	--theme-color-background: var(--color-neutral-50);
+	--theme-color-background-2: var(--color-neutral-100);
+	--theme-color-foreground: var(--color-neutral-950);
+	--theme-color-foreground-2: var(--color-neutral-800);
+	--theme-color-muted-foreground: var(--color-neutral-600);
+
+	--theme-color-border: var(--color-neutral-300);
+}
+
+html[data-theme="dark"] {
+	--theme-color-background: var(--color-neutral-950);
+	--theme-color-background-2: var(--color-neutral-900);
+	--theme-color-foreground: var(--color-neutral-50);
+	--theme-color-foreground-2: var(--color-neutral-300);
+	--theme-color-muted-foreground: var(--color-neutral-400);
+
+	--theme-color-border: var(--color-neutral-800);
+}
+
+@theme inline {
+	--color-background: var(--theme-color-background);
+	--color-background-2: var(--theme-color-background-2);
+	--color-foreground: var(--theme-color-foreground);
+	--color-foreground-2: var(--theme-color-foreground-2);
+	--color-muted-foreground: var(--theme-color-muted-foreground);
+
+	--color-border: var(--theme-color-border);
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @utility container {
 	margin-inline: auto;
@@ -53,7 +97,7 @@
 }
 
 html {
-	@apply bg-neutral-950 text-neutral-200;
+	@apply bg-background text-foreground;
 	font-family: "Inter Variable", sans-serif;
 	font-weight: 400;
 }

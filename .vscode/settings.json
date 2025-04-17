@@ -10,13 +10,14 @@
 		"*.css": "tailwindcss"
 	},
 	"cSpell.words": [
-		"ListenBrainz",
 		"Aggregato",
 		"arktype",
 		"Bandcamp",
 		"bezier",
 		"iconify",
 		"klass",
+		"ListenBrainz",
+		"oklch",
 		"oslojs",
 		"rosemi",
 		"scrobbled",

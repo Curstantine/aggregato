@@ -17,7 +17,7 @@
 
 <section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">
 	<h1 class="text-xl font-semibold">Register</h1>
-	<span class="text-sm text-neutral-400">
+	<span class="text-muted-foreground text-sm">
 		Sign-up to get started, or login using your existing account
 	</span>
 
@@ -48,9 +48,9 @@
 
 		<Button type="submit" class="mt-2 w-full">Continue</Button>
 
-		<div class="mt-6 flex flex-col rounded border border-neutral-600 p-2">
+		<div class="border-border mt-6 flex flex-col rounded border p-2">
 			<h2 class="text-sm font-medium">Readme</h2>
-			<span class="text-xs leading-normal text-neutral-400">
+			<span class="text-muted-foreground text-xs leading-normal">
 				The email address you provide will only be used for release notifications, and
 				account recovery. You are free to use whatever email you want, but make sure you
 				have the means to recover it in case you forget your password.
@@ -60,5 +60,7 @@
 </section>
 
 {#snippet link(label: string, href: string)}
-	<a {href} class="text-xs text-neutral-400 transition-colors hover:text-neutral-300">{label}</a>
+	<a {href} class="text-muted-foreground hover:text-foreground-2 text-xs transition-colors"
+		>{label}</a
+	>
 {/snippet}
