@@ -26,7 +26,11 @@
 		<a href="/">Aggregato</a>
 
 		<div class="flex-1"></div>
-		<div role="presentation" class="hidden space-x-2 md:block">
+		<div
+			role="presentation"
+			data-sveltekit-preload-code="eager"
+			class="hidden space-x-2 md:block"
+		>
 			{@render link("/faq", "FAQ")}
 			{@render link("/pricing", "Pricing")}
 		</div>
