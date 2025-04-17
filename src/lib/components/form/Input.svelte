@@ -8,7 +8,7 @@
 <input
 	{...props}
 	class={[
-		"text-foreground focus-visible:border-rosemi-500 placeholder:text-muted-foreground border-border h-9 rounded border px-2 text-sm transition-colors focus-visible:outline-none sm:h-8",
+		"h-9 rounded border border-border bg-background-2 px-2 text-sm text-foreground transition-colors placeholder:text-muted-foreground focus-visible:border-rosemi-500 focus-visible:outline-none sm:h-8",
 		props.class
 	]}
 />

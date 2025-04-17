@@ -50,7 +50,7 @@
 
 {#snippet search(klass: string)}
 	<form action="/search" class={["relative", klass]}>
-		<Input type="text" name="q" placeholder="Search" class="peer w-64 bg-background/50" />
+		<Input type="text" name="q" placeholder="Search" class="peer w-64 !bg-background/25" />
 		<span
 			class="absolute top-1.5 right-1.5 iconify size-5 text-muted-foreground transition-colors material-symbols--search-rounded peer-focus:text-foreground"
 		></span>
