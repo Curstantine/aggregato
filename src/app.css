@@ -27,6 +27,9 @@
 	--color-rosemi-900: #6d2e48;
 	--color-rosemi-950: #3c1524;
 
+	--color-red-400: oklch(0.704 0.191 22.216);
+	--color-red-500: oklch(0.637 0.237 25.331);
+
 	--transition-duration: 300ms;
 	--transition-duration-emphasized: 500ms;
 	--transition-duration-emphasized-decelerate: 400ms;
@@ -97,7 +100,7 @@ html[data-theme="dark"] {
 }
 
 html {
-	@apply bg-background text-foreground;
+	@apply bg-background text-foreground transition-colors;
 	font-family: "Inter Variable", sans-serif;
 	font-weight: 400;
 }

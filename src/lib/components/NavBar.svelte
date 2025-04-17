@@ -21,7 +21,7 @@
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 </script>
 
-<nav class="border-b-border shadow-background/75 sticky top-0 border-b backdrop-blur-2xl">
+<nav class="sticky top-0 border-b border-b-border backdrop-blur-2xl transition-colors">
 	<div class="container flex h-14 items-center sm:h-12">
 		<a href="/">Aggregato</a>
 
@@ -41,14 +41,14 @@
 </nav>
 
 {#snippet link(href: string, label: string)}
-	<a {href} class="text-foreground-2 text-sm">{label}</a>
+	<a {href} class="text-sm text-foreground-2">{label}</a>
 {/snippet}
 
 {#snippet search(klass: string)}
 	<form action="/search" class={["relative", klass]}>
-		<Input type="text" name="q" placeholder="Search" class="bg-background/50 peer w-64" />
+		<Input type="text" name="q" placeholder="Search" class="peer w-64 bg-background/50" />
 		<span
-			class="iconify material-symbols--search-rounded peer-focus:text-foreground text-muted-foreground absolute right-1.5 top-1.5 size-5 transition-colors"
+			class="absolute top-1.5 right-1.5 iconify size-5 text-muted-foreground transition-colors material-symbols--search-rounded peer-focus:text-foreground"
 		></span>
 	</form>
 {/snippet}
@@ -67,35 +67,35 @@
 				intent="ghost"
 				size="square"
 				aria-label="Open notifications"
-				class="aria-expanded:text-rosemi-500 group grid grid-cols-1 place-items-center"
+				class="group grid grid-cols-1 place-items-center aria-expanded:text-rosemi-500"
 			>
 				<span
-					class="iconify material-symbols--notifications-outline-rounded group-[[aria-expanded='true']]:rotate-4 size-5 transition-transform"
+					class="iconify size-5 transition-transform material-symbols--notifications-outline-rounded group-[[aria-expanded='true']]:rotate-4"
 				></span>
 			</Button>
 		{/snippet}
 
 		<div
-			class="border-b-border bg-background sticky top-0 z-10 flex h-8 items-center justify-between border-b pl-2 pr-1"
+			class="sticky top-0 z-10 flex h-8 items-center justify-between border-b border-b-border bg-background pr-1 pl-2"
 		>
 			<span class="text-xs font-medium">Notifications</span>
 			<PopoverPrimitive.Close aria-label="Close notification popover">
 				{#snippet child({ props })}
 					<Button {...props} size="squareSmall" intent="ghost">
-						<span class="iconify material-symbols--close-small-outline-rounded size-5"
+						<span class="iconify size-5 material-symbols--close-small-outline-rounded"
 						></span>
 					</Button>
 				{/snippet}
 			</PopoverPrimitive.Close>
-			<div class="from-background absolute inset-x-0 top-8 z-10 h-4 bg-gradient-to-b"></div>
+			<div class="absolute inset-x-0 top-8 z-10 h-4 bg-gradient-to-b from-background"></div>
 		</div>
 
 		<div class="flex flex-col">
 			{#each notificationState.active as notification}
 				{@const id = useId()}
-				<div class="border-border flex flex-col border-b p-2 last:border-b-0">
+				<div class="flex flex-col border-b border-border p-2 last:border-b-0">
 					<span {id} class="text-sm">{notification.label}</span>
-					<span class="text-muted-foreground mb-1 text-xs">
+					<span class="mb-1 text-xs text-muted-foreground">
 						{notification.progress} of {notification.endStep}
 					</span>
 					<ProgressBar
@@ -119,7 +119,7 @@
 				aria-label="Open profile menu"
 				fullyRounded
 			>
-				<span class="iconify material-symbols--person-outline-rounded size-5"></span>
+				<span class="iconify size-5 material-symbols--person-outline-rounded"></span>
 			</Button>
 		{/snippet}
 
