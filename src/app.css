@@ -99,16 +99,6 @@ html[data-theme="dark"] {
 	prefixes: material-symbols;
 }
 
-html {
-	@apply bg-background text-foreground transition-colors;
-	font-family: "Inter Variable", sans-serif;
-	font-weight: 400;
-}
-
-:focus-visible {
-	@apply outline outline-rosemi-500;
-}
-
 @layer theme {
 	html[data-theme="light"] {
 		color-scheme: light;
@@ -127,4 +117,19 @@ html {
 	.botched-scroll {
 		scrollbar-width: thin;
 	}
+}
+
+html {
+	@apply bg-background text-foreground transition-colors;
+	font-family: "Inter Variable", sans-serif;
+	font-weight: 400;
+}
+
+:focus-visible {
+	@apply outline outline-rosemi-500;
+}
+
+html[data-theme-init="false"],
+html[data-theme-init="false"] * {
+	transition-property: none !important;
 }

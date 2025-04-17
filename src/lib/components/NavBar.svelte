@@ -139,7 +139,7 @@
 				contentProps={{ class: "min-w-42", sideOffset: 4 }}
 			>
 				<DropdownMenuRadioGroup
-					value={themeState.value}
+					value={themeState.mode}
 					onValueChange={(e) => setThemeMode(e as ThemeMode)}
 				>
 					<DropdownMenuRadioItem

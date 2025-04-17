@@ -4,7 +4,8 @@ export const user = sqliteTable("user", {
 	id: text("id").primaryKey(),
 	username: text("username").notNull().unique(),
 	email: text("email").notNull().unique(),
-	passwordHash: text("password_hash").notNull()
+	passwordHash: text("password_hash").notNull(),
+	prefThemeMode: text("pref_theme_mode", { enum: ["light", "dark", "system"] }).default("system")
 });
 
 export const session = sqliteTable("session", {
@@ -16,5 +17,4 @@ export const session = sqliteTable("session", {
 });
 
 export type Session = typeof session.$inferSelect;
-
 export type User = typeof user.$inferSelect;

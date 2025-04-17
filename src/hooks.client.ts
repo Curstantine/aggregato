@@ -4,5 +4,4 @@ import { init as themeInit } from "$lib/client/theme.svelte";
 
 export const init: ClientInit = () => {
 	themeInit();
-	console.debug("ClientInit called");
 };
