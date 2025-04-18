@@ -6,9 +6,9 @@
 
 	import { enhance } from "$app/forms";
 
-	import type { ActionData } from "../$types";
+	import type { PageProps } from "./$types";
 
-	let { form }: { form: ActionData } = $props();
+	let { form }: PageProps = $props();
 </script>
 
 <svelte:head>
@@ -17,24 +17,28 @@
 
 <section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">
 	<h1 class="text-xl font-semibold">Register</h1>
-	<span class="text-muted-foreground text-sm">
+	<span class="text-sm text-muted-foreground">
 		Sign-up to get started, or login using your existing account
 	</span>
 
-	<form method="post" action="/auth?/register" use:enhance class="mt-6 space-y-3">
-		<Label label="Email">
+	<form method="post" use:enhance class="mt-6 space-y-3">
+		<Label id="email" label="Email" error={form?.invalid?.email}>
 			<Input name="email" placeholder="rosemi@randomaccessiblemail.moe" />
 		</Label>
 
-		<Label label="Username">
+		<Label id="username" label="Username" error={form?.invalid?.username}>
 			<Input name="username" placeholder="Enter a username" />
 		</Label>
 
-		<Label label="Password">
+		<Label id="password" label="Password" error={form?.invalid?.password}>
 			<SecretInput type="password" name="password" placeholder="Enter a password" />
 		</Label>
 
-		<Label label="Confirm Password">
+		<Label
+			id="confirm_password"
+			label="Confirm Password"
+			error={form?.invalid?.confirmPassword}
+		>
 			<SecretInput
 				type="password"
 				name="confirmPassword"
@@ -48,9 +52,9 @@
 
 		<Button type="submit" class="mt-2 w-full">Continue</Button>
 
-		<div class="border-border mt-6 flex flex-col rounded border p-2">
+		<div class="mt-6 flex flex-col rounded border border-border p-2">
 			<h2 class="text-sm font-medium">Readme</h2>
-			<span class="text-muted-foreground text-xs leading-normal">
+			<span class="text-xs leading-normal text-muted-foreground">
 				The email address you provide will only be used for release notifications, and
 				account recovery. You are free to use whatever email you want, but make sure you
 				have the means to recover it in case you forget your password.
@@ -60,7 +64,7 @@
 </section>
 
 {#snippet link(label: string, href: string)}
-	<a {href} class="text-muted-foreground hover:text-foreground-2 text-xs transition-colors"
+	<a {href} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2"
 		>{label}</a
 	>
 {/snippet}

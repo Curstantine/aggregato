@@ -6,9 +6,9 @@
 
 	import { enhance } from "$app/forms";
 
-	import type { ActionData } from "../$types";
+	import type { PageProps } from "./$types";
 
-	let { form }: { form: ActionData } = $props();
+	let { form }: PageProps = $props();
 </script>
 
 <svelte:head>
@@ -17,17 +17,26 @@
 
 <section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">
 	<h1 class="text-xl font-semibold">Login</h1>
-	<span class="text-muted-foreground text-sm">
+	<span class="text-sm text-muted-foreground">
 		Sign-in to continue, or create an account to get started
 	</span>
 
-	<form method="post" action="/auth?/login" use:enhance class="mt-6 space-y-3">
-		<Label label="Username">
-			<Input name="username" placeholder="Enter a username" />
+	<form method="post" use:enhance class="mt-6 space-y-3">
+		<Label id="username" label="Email/Username" error={form?.invalid?.username}>
+			<Input
+				id="username"
+				name="username"
+				placeholder="Enter either your email or username"
+			/>
 		</Label>
 
-		<Label label="Password">
-			<SecretInput type="password" name="password" placeholder="Enter a password" />
+		<Label id="password" label="Password" error={form?.invalid?.password}>
+			<SecretInput
+				type="password"
+				id="password"
+				name="password"
+				placeholder="Enter a password"
+			/>
 		</Label>
 
 		<div class="flex justify-between">
@@ -40,7 +49,7 @@
 </section>
 
 {#snippet link(label: string, href: string)}
-	<a {href} class="text-muted-foreground hover:text-foreground-2 text-xs transition-colors"
-		>{label}</a
-	>
+	<a {href} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2">
+		{label}
+	</a>
 {/snippet}

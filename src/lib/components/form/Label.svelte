@@ -1,15 +1,24 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 
+	import type { SerArkError } from "$lib/server/validator/utils";
+
 	interface Props {
+		id: string;
 		label: string;
+		error?: string | SerArkError;
 		children: Snippet;
 	}
 
-	const { label, children }: Props = $props();
+	const { id, label, error, children }: Props = $props();
 </script>
 
-<label class="flex flex-col gap-1 text-sm">
-	{label}
+<div class="flex flex-col gap-1 text-sm">
+	<label for={id}>{label}</label>
 	{@render children()}
-</label>
+	{#if error}
+		<span class="text-xs text-red-400">
+			{typeof error === "string" ? error : error.message}
+		</span>
+	{/if}
+</div>
