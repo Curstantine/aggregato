@@ -19,7 +19,7 @@
 	};
 
 	const sizeStyles: Record<Size, string> = {
-		default: "h-9 sm:h-8 px-4",
+		default: "h-9 flex items-center text-center justify-center sm:h-8 px-4",
 		square: "grid place-items-center grid-cols-1 size-9 sm:size-8",
 		squareSmall: "grid place-items-center grid-cols-1 size-7 sm:size-6"
 	};
