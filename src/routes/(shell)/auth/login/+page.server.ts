@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 import * as auth from "$lib/server/auth";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
-import { arkFormParser, toSerArkErrors, type FormSerArkErrors } from "$lib/server/validator/utils";
+import { arkFormParser, toSerArkErrors, type SerArkError } from "$lib/server/validator/utils";
 
 import type { Actions, PageServerLoad } from "./$types";
 
@@ -20,6 +20,15 @@ const LoginCredentials = type({
 });
 
 const formLoginCredentials = arkFormParser.pipe(LoginCredentials);
+
+const INVALID_CRED_ERROR: Record<string, SerArkError> = {
+	username: {
+		message: "Invalid username or password"
+	},
+	password: {
+		message: "Invalid username or password"
+	}
+};
 
 export const actions: Actions = {
 	default: async (event) => {
@@ -46,7 +55,7 @@ export const actions: Actions = {
 		if (!existingUser) {
 			return fail(400, {
 				message: "Incorrect username or password",
-				invalid: {} as FormSerArkErrors
+				invalid: INVALID_CRED_ERROR
 			});
 		}
 
@@ -59,7 +68,7 @@ export const actions: Actions = {
 		if (!validPassword) {
 			return fail(400, {
 				message: "Incorrect username or password",
-				invalid: {} as FormSerArkErrors
+				invalid: INVALID_CRED_ERROR
 			});
 		}
 
