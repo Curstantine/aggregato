@@ -1,9 +1,14 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
+	import SettingsSideMenu from "$lib/components/SettingsSideMenu.svelte";
 
-	import type { LayoutData } from "./$types";
+	import type { LayoutProps } from "./$types";
 
-	let { data, children }: { data: LayoutData; children: Snippet } = $props();
+	let { children }: LayoutProps = $props();
 </script>
 
-{@render children()}
+<main class="container grid grid-cols-[--spacing(56)_1fr] gap-2 pl-1 sm:pl-5 2xl:pl-0">
+	<SettingsSideMenu />
+	<div class="p-4">
+		{@render children()}
+	</div>
+</main>

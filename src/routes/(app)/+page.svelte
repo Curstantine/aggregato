@@ -1,30 +1,25 @@
 <script lang="ts">
-	type Catalog = { title: string; description: string; gradient: string };
+	type Catalog = { title: string; description: string };
 	const catalogs: Catalog[] = [
 		{
 			title: "Last.fm",
-			description: "Connect your last.fm account and import your scrobbled artists.",
-			gradient: "from-[#d1170e] to-white/5"
+			description: "Connect your last.fm account and import your scrobbled artists."
 		},
 		{
 			title: "Spotify",
-			description: "Import your favorite artists from your Spotify account.",
-			gradient: "from-[#18d860] to-white/10"
+			description: "Import your favorite artists from your Spotify account."
 		},
 		{
 			title: "Apple Music",
-			description: "Connect to Apple Music and import artists from your library.",
-			gradient: "from-[#fa263e] to-[#fb5971]/50"
+			description: "Connect to Apple Music and import artists from your library."
 		},
 		{
 			title: "Bandcamp",
-			description: "Import artists you follow and have purchased music from on Bandcamp.",
-			gradient: "from-[#1da0c3] to-white/10"
+			description: "Import artists you follow and have purchased music from on Bandcamp."
 		},
 		{
 			title: "ListenBrainz",
-			description: "Import your listening data and favorite artists from ListenBrainz.",
-			gradient: "from-[#353070] to-[#eb743b]/15"
+			description: "Import your listening data and favorite artists from ListenBrainz."
 		}
 	];
 </script>
@@ -58,24 +53,9 @@
 
 <div class="fixed inset-x-0 top-0 -z-10 container">
 	<div
-		class="fade-in absolute -top-24 -right-0 -z-10 size-72 rounded-full bg-rosemi-500/10 blur-3xl"
+		class="absolute top-24 right-24 -z-10 size-72 animate-fade-in rounded-full bg-rosemi-500/10 blur-3xl"
 	></div>
 	<div
-		class="fade-in bg-cyan-500/10 absolute top-24 right-24 -z-20 size-72 rounded-full blur-3xl"
+		class="absolute -top-24 right-0 -z-10 size-72 animate-fade-in rounded-full bg-sky-500/5 blur-3xl"
 	></div>
 </div>
-
-<style>
-	@keyframes fadeIn {
-		from {
-			opacity: 0.1;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-
-	.fade-in {
-		animation: fadeIn 1s var(--ease-emphasized-decelerate) forwards;
-	}
-</style>

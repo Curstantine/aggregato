@@ -3,9 +3,9 @@
 
 	import { enhance } from "$app/forms";
 
-	import type { PageData } from "./$types";
+	import type { PageProps } from "./$types";
 
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
 </script>
 
 <section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">

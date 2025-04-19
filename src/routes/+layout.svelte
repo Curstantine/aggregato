@@ -2,7 +2,9 @@
 	import "@fontsource-variable/inter";
 	import "../app.css";
 
-	let { children } = $props();
+	import type { LayoutProps } from "./$types";
+
+	let { children }: LayoutProps = $props();
 </script>
 
 <svelte:head>

@@ -22,7 +22,7 @@
 </script>
 
 <nav class="sticky top-0 border-b border-b-border backdrop-blur-2xl transition-colors">
-	<div class="container flex h-14 items-center sm:h-12">
+	<div class="container flex h-(--nav-height) items-center">
 		<a href="/">Aggregato</a>
 
 		<div class="flex-1"></div>
