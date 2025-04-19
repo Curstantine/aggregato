@@ -6,9 +6,9 @@
 	let { children }: LayoutProps = $props();
 </script>
 
-<main class="container grid grid-cols-[--spacing(56)_1fr] gap-2 pl-1 sm:pl-5 2xl:pl-0">
+<main class="container grid grid-cols-[--spacing(56)_1fr] pl-1 sm:pl-5 2xl:pl-0">
 	<SettingsSideMenu />
-	<div class="p-4">
+	<div class="flex flex-col p-4">
 		{@render children()}
 	</div>
 </main>
