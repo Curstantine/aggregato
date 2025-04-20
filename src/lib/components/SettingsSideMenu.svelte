@@ -23,7 +23,7 @@
 	<a
 		{href}
 		aria-current={page.url.pathname === href}
-		class="grid h-8 grid-cols-[--spacing(5)_1fr] items-center gap-2 rounded px-3 text-sm transition-colors aria-current:bg-neutral-900"
+		class="grid h-8 grid-cols-[--spacing(5)_1fr] items-center gap-2 rounded px-3 text-sm transition-colors aria-current:bg-background-2"
 	>
 		<span class={["iconify size-5 text-rosemi-500", icon]}></span>
 		{label}
