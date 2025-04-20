@@ -11,7 +11,7 @@
 
 <DropdownMenu.Item
 	{...rest}
-	class="hover:bg-background-2 flex h-9 select-none items-center justify-between gap-2 px-3 transition-colors"
+	class="flex h-9 items-center justify-between gap-2 px-3 transition-colors select-none hover:bg-background-2"
 >
 	{label}
 	{#if icon}

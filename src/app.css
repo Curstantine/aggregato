@@ -42,6 +42,8 @@
 	--color-red-400: oklch(0.704 0.191 22.216);
 	--color-red-500: oklch(0.637 0.237 25.331);
 
+	--text-ssm: 0.813rem;
+
 	--transition-duration: 300ms;
 	--transition-duration-emphasized: 500ms;
 	--transition-duration-emphasized-decelerate: 400ms;
@@ -58,8 +60,8 @@
 	--ease-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
 
 	--shadow-glow: 0 0px 20px rgba(255, 255, 255, 0.35), 0 0px 65px rgba(255, 255, 255, 0.2);
-
 	--animate-fade-in: fade-in 1.5s var(--ease-standard-decelerate) forwards;
+
 	@keyframes fade-in {
 		from {
 			opacity: 0.1;
@@ -68,6 +70,27 @@
 			opacity: 1;
 		}
 	}
+
+	@keyframes fade-out {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+}
+
+@utility fade-in-* {
+	/* prettier-ignore */
+	animation: --value(--transition-duration-*) var(--ease-standard-decelerate) forwards fade-in;
+	animation: --value([integer]) var(--ease-standard-decelerate) forwards fade-in;
+}
+
+@utility fade-out-* {
+	/* prettier-ignore */
+	animation: --value(--transition-duration-*) var(--ease-standard-decelerate) forwards fade-out;
+	animation: --value([integer]) var(--ease-standard-decelerate) forwards fade-out;
 }
 
 @theme inline {

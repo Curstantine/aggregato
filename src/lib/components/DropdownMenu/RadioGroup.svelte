@@ -10,7 +10,7 @@
 	{...rest}
 	class={[
 		"[&>*:first-child]:rounded-t [&>*:last-child]:rounded-b",
-		"[&>*]:border-b-border [&>*:last-child]:border-b-0 [&>*]:border-b"
+		"[&>*]:border-b [&>*]:border-b-border [&>*:last-child]:border-b-0"
 	]}
 >
 	{@render children?.()}

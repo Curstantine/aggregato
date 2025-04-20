@@ -11,10 +11,10 @@
 
 <DropdownMenu.RadioItem
 	{...rest}
-	class="hover:bg-background-2 data-[state='checked']:bg-background-2 group flex h-9 select-none items-center justify-between gap-2 px-3 text-sm transition-colors"
+	class="group flex h-9 items-center justify-between gap-2 px-3 text-sm transition-colors select-none hover:bg-background-2 data-[state='checked']:bg-background-2"
 >
 	{label}
 	{#if icon}
-		<span class={["iconify group-data-[state='checked']:text-rosemi-500 size-5", icon]}></span>
+		<span class={["iconify size-5 group-data-[state='checked']:text-rosemi-500", icon]}></span>
 	{/if}
 </DropdownMenu.RadioItem>
