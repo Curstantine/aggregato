@@ -129,7 +129,7 @@
 
 		<DropdownMenuPrimitive.Group>
 			<DropdownMenuItemLink
-				href="/settings"
+				href="/settings/appearance"
 				label="Settings"
 				icon="material-symbols--settings-outline-rounded"
 			/>
