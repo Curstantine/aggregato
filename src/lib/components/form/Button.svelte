@@ -2,7 +2,7 @@
 	import { Button, type ButtonRootProps } from "bits-ui";
 	import type { Snippet } from "svelte";
 
-	type Intent = "ghost" | "rosemi" | "border";
+	type Intent = "ghost" | "rosemi" | "border" | "boring";
 	type Size = "default" | "square" | "squareSmall";
 
 	type Props = ButtonRootProps & {
@@ -13,6 +13,7 @@
 	};
 
 	const intentStyles: Record<Intent, string> = {
+		boring: "rounded border border-border bg-background-2 shadow",
 		rosemi: "dark:border-1 border-rosemi-500 bg-rosemi-700 text-rosemi-50 shadow-glow shadow-rosemi-700/20 hover:shadow-rosemi-700/30",
 		ghost: "hover:bg-background-2",
 		border: "border border-border bg-background-2"

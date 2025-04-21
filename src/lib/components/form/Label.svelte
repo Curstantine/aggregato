@@ -7,7 +7,7 @@
 		id: string;
 		label: string;
 		error?: string | SerArkError;
-		children: Snippet;
+		children?: Snippet;
 	}
 
 	const { id, label, error, children }: Props = $props();
@@ -15,7 +15,7 @@
 
 <div class="flex flex-col gap-1 text-sm">
 	<label for={id}>{label}</label>
-	{@render children()}
+	{@render children?.()}
 	{#if error}
 		<span class="text-xs text-red-400">
 			{typeof error === "string" ? error : error.message}
