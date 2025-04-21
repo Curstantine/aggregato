@@ -1,25 +1,30 @@
 <script lang="ts">
-	type Catalog = { title: string; description: string };
+	type Catalog = { title: string; description: string; linkId: string };
 	const catalogs: Catalog[] = [
 		{
 			title: "Last.fm",
-			description: "Connect your last.fm account and import your scrobbled artists."
+			description: "Connect your last.fm account and import your scrobbled artists.",
+			linkId: "lastfm"
 		},
 		{
 			title: "Spotify",
-			description: "Import your favorite artists from your Spotify account."
+			description: "Import your favorite artists from your Spotify account.",
+			linkId: "spotify"
 		},
 		{
 			title: "Apple Music",
-			description: "Connect to Apple Music and import artists from your library."
+			description: "Connect to Apple Music and import artists from your library.",
+			linkId: "apple-music"
 		},
 		{
 			title: "Bandcamp",
-			description: "Import artists you follow and have purchased music from on Bandcamp."
+			description: "Import artists you follow and have purchased music from on Bandcamp.",
+			linkId: "bandcamp"
 		},
 		{
 			title: "ListenBrainz",
-			description: "Import your listening data and favorite artists from ListenBrainz."
+			description: "Import your listening data and favorite artists from ListenBrainz.",
+			linkId: "listenbrainz"
 		}
 	];
 </script>
@@ -39,7 +44,8 @@
 	</div>
 
 	{#each catalogs as catalog}
-		<button
+		<a
+			href={`/settings/import#${catalog.linkId}`}
 			class="group flex flex-col rounded border border-border px-2 py-3 text-start transition-colors hover:border-rosemi-500 hover:bg-background/30 sm:py-2"
 		>
 			<span class="text-sm font-medium select-none">{catalog.title}</span>
@@ -47,7 +53,7 @@
 			<div
 				class="iconify size-4 self-end text-foreground transition-all material-symbols--keyboard-arrow-right group-hover:translate-x-0.5 group-hover:text-rosemi-500"
 			></div>
-		</button>
+		</a>
 	{/each}
 </section>
 
