@@ -51,6 +51,7 @@
 	--transition-duration-standard: 300ms;
 	--transition-duration-standard-decelerate: 250ms;
 	--transition-duration-standard-accelerate: 200ms;
+	--transition-duration-late-afternoon: 1.5s;
 
 	--ease: cubic-bezier(0.2, 0, 0, 1);
 	--ease-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
@@ -60,37 +61,26 @@
 	--ease-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
 
 	--shadow-glow: 0 0px 20px rgba(255, 255, 255, 0.35), 0 0px 65px rgba(255, 255, 255, 0.2);
-	--animate-fade-in: fade-in 1.5s var(--ease-standard-decelerate) forwards;
-
-	@keyframes fade-in {
-		from {
-			opacity: 0.1;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-
-	@keyframes fade-out {
-		from {
-			opacity: 1;
-		}
-		to {
-			opacity: 0;
-		}
-	}
 }
 
 @utility fade-in-* {
 	/* prettier-ignore */
 	animation: --value(--transition-duration-*) var(--ease-standard-decelerate) forwards fade-in;
-	animation: --value([integer]) var(--ease-standard-decelerate) forwards fade-in;
 }
 
 @utility fade-out-* {
 	/* prettier-ignore */
 	animation: --value(--transition-duration-*) var(--ease-standard-decelerate) forwards fade-out;
-	animation: --value([integer]) var(--ease-standard-decelerate) forwards fade-out;
+}
+
+@utility slide-in-ltr-* {
+	/* prettier-ignore */
+	animation: --value(--transition-duration-*) var(--ease-emphasized-decelerate) forwards slide-in-ltr;
+}
+
+@utility slide-out-ltr-* {
+	/* prettier-ignore */
+	animation: --value(--transition-duration-*) var(--ease-emphasized-accelerate) forwards slide-out-ltr;
 }
 
 @theme inline {
@@ -152,6 +142,44 @@
 	html[data-theme-init="false"],
 	html[data-theme-init="false"] * {
 		transition-property: none !important;
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0.1;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes fade-out {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes slide-in-ltr {
+		from {
+			transform: translateX(-100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes slide-out-ltr {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-100%);
+		}
 	}
 }
 

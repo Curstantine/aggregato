@@ -8,6 +8,7 @@
 	import Button from "$lib/components/form/Button.svelte";
 	import Input from "$lib/components/form/Input.svelte";
 	import { Select, SelectItem } from "$lib/components/Select";
+	import SettingsHeader from "$lib/components/SettingsHeader.svelte";
 
 	import type { PageProps } from "./$types";
 
@@ -29,7 +30,7 @@
 	let { data }: PageProps = $props();
 </script>
 
-<h1 class="mb-6 ml-3 text-lg leading-tight font-semibold">Import</h1>
+<SettingsHeader>Import</SettingsHeader>
 
 <section id="lastfm">
 	<ControlGroupHeader>Last.fm</ControlGroupHeader>
@@ -47,6 +48,7 @@
 		>
 			<Select
 				type="single"
+				name="lastfm-import-mode"
 				bind:value={lastfmMode}
 				items={lastfmModes}
 				placeholder="Select an import mode"
@@ -83,8 +85,8 @@
 			description="The strategy to import the data. The higher the import mode, more time it will take to import the data"
 		>
 			<Select
-				triggerProps={{ id: "listenbrainz-import-mode", name: "listenbrainz-import-mode" }}
 				type="single"
+				name="listenbrainz-import-mode"
 				bind:value={listenbrainzMode}
 				items={listenbrainzModes}
 				placeholder="Select an import mode"

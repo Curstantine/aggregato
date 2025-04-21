@@ -59,9 +59,9 @@
 
 <div class="fixed inset-x-0 top-0 -z-10 container">
 	<div
-		class="absolute top-24 right-24 -z-10 size-72 animate-fade-in rounded-full bg-rosemi-500/10 blur-3xl"
+		class="absolute top-24 right-24 -z-10 size-72 fade-in-late-afternoon rounded-full bg-rosemi-500/10 blur-3xl"
 	></div>
 	<div
-		class="absolute -top-24 right-0 -z-10 size-72 animate-fade-in rounded-full bg-sky-500/5 blur-3xl"
+		class="absolute -top-24 right-0 -z-10 size-72 fade-in-late-afternoon rounded-full bg-sky-500/5 blur-3xl"
 	></div>
 </div>

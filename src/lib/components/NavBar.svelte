@@ -21,7 +21,7 @@
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 </script>
 
-<nav class="sticky top-0 border-b border-b-border backdrop-blur-2xl transition-colors">
+<nav class="sticky top-0 z-50 border-b border-b-border backdrop-blur-2xl transition-colors">
 	<div class="container flex h-(--nav-height) items-center">
 		<a href="/">Aggregato</a>
 
