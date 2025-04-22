@@ -52,9 +52,13 @@ export const actions: Actions = {
 		});
 
 		try {
-			await db
-				.insert(table.user)
-				.values({ id: userId, username: out.username, email: out.email, passwordHash });
+			await db.insert(table.user).values({
+				id: userId,
+				username: out.username,
+				email: out.email,
+				passwordHash,
+				createdAt: new Date()
+			});
 
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, userId);
@@ -67,6 +71,7 @@ export const actions: Actions = {
 		redirect(302, "/");
 	}
 };
+
 function generateUserId() {
 	// ID with 120 bits of entropy, or about the same as UUID v4.
 	const bytes = crypto.getRandomValues(new Uint8Array(15));
