@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { ComponentProps } from "svelte";
 
+	import { applyAction } from "$app/forms";
+
 	import {
 		ControlGroup,
 		ControlGroupDivider,
@@ -14,7 +16,7 @@
 
 	import { ImportMode } from "$lib/types/form";
 
-	import type { PageProps } from "./$types";
+	import type { PageProps, SubmitFunction } from "./$types";
 
 	const lastfmModes = [
 		{ value: ImportMode.Top10, label: "Top 10 Scrobbles" },
@@ -28,25 +30,22 @@
 		{ value: ImportMode.All, label: "All" }
 	];
 
-	const importAction: ComponentProps<typeof ControlGroup>["enhanceCallback"] = ({
-		formData,
-		cancel,
-		action
-	}) => {
-		const type = action.search.substring(2);
-		const username = formData.get("username");
-		const mode = formData.get("mode");
+	const importAction: SubmitFunction = ({ formData, cancel, action }) => {
+		formData.set("js-allowed", "true");
 
-		navigator.serviceWorker.controller?.postMessage({
-			type: `import-${type}`,
-			username,
-			mode
-		});
+		return async ({ result }) => {
+			if (result.type === "success" && result.data?.runImportLocally) {
+				navigator.serviceWorker.controller?.postMessage({
+					type: result.data.type,
+					...result.data.params
+				});
+			}
 
-		cancel();
+			await applyAction(result);
+		};
 	};
 
-	let { data }: PageProps = $props();
+	let { data, form }: PageProps = $props();
 </script>
 
 <SettingsHeader>Import</SettingsHeader>
