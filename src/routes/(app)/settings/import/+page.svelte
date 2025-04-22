@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { ComponentProps } from "svelte";
+
 	import {
 		ControlGroup,
 		ControlGroupDivider,
@@ -10,22 +12,39 @@
 	import { Select, SelectItem } from "$lib/components/Select";
 	import SettingsHeader from "$lib/components/SettingsHeader.svelte";
 
+	import { ImportMode } from "$lib/types/form";
+
 	import type { PageProps } from "./$types";
 
 	const lastfmModes = [
-		{ value: "top-10", label: "Top 10 Scrobbles" },
-		{ value: "top-50", label: "Top 50 Scrobbles" },
-		{ value: "all", label: "All" }
+		{ value: ImportMode.Top10, label: "Top 10 Scrobbles" },
+		{ value: ImportMode.Top50, label: "Top 50 Scrobbles" },
+		{ value: ImportMode.All, label: "All" }
 	];
 
 	const listenbrainzModes = [
-		{ value: "top-10", label: "Top 10 Listens" },
-		{ value: "top-50", label: "Top 50 Listens" },
-		{ value: "all", label: "All" }
+		{ value: ImportMode.Top10, label: "Top 10 Listens" },
+		{ value: ImportMode.Top50, label: "Top 50 Listens" },
+		{ value: ImportMode.All, label: "All" }
 	];
 
-	let lastfmMode = $state("");
-	let listenbrainzMode = $state("");
+	const importAction: ComponentProps<typeof ControlGroup>["enhanceCallback"] = ({
+		formData,
+		cancel,
+		action
+	}) => {
+		const type = action.search.substring(2);
+		const username = formData.get("username");
+		const mode = formData.get("mode");
+
+		navigator.serviceWorker.controller?.postMessage({
+			type: `import-${type}`,
+			username,
+			mode
+		});
+
+		cancel();
+	};
 
 	let { data }: PageProps = $props();
 </script>
@@ -34,9 +53,9 @@
 
 <section id="lastfm">
 	<ControlGroupHeader>Last.fm</ControlGroupHeader>
-	<ControlGroup>
+	<ControlGroup method="POST" action="?/lastfm" enhanceCallback={importAction}>
 		<ControlGroupField id="lastfm-username" label="Your Last.fm username">
-			<Input id="lastfm-username" name="lastfm.username" placeholder="Last.fm username" />
+			<Input id="lastfm-username" name="username" placeholder="Last.fm username" required />
 		</ControlGroupField>
 
 		<ControlGroupDivider />
@@ -48,11 +67,11 @@
 		>
 			<Select
 				type="single"
-				name="lastfm-import-mode"
-				bind:value={lastfmMode}
+				name="mode"
 				items={lastfmModes}
 				placeholder="Select an import mode"
 				contentProps={{ sideOffset: 16 }}
+				required
 			>
 				{#each lastfmModes as mode}
 					<SelectItem value={mode.value} label={mode.label}>{mode.label}</SelectItem>
@@ -68,12 +87,13 @@
 
 <section id="listenbrainz" class="mt-4">
 	<ControlGroupHeader>ListenBrainz</ControlGroupHeader>
-	<ControlGroup>
+	<ControlGroup method="POST" action="?/listenbrainz" enhanceCallback={importAction}>
 		<ControlGroupField id="listenbrainz-username" label="Your ListenBrainz username">
 			<Input
 				id="listenbrainz-username"
-				name="listenbrainz.username"
-				placeholder="Last.fm username"
+				name="username"
+				placeholder="ListenBrainz username"
+				required
 			/>
 		</ControlGroupField>
 
@@ -86,11 +106,11 @@
 		>
 			<Select
 				type="single"
-				name="listenbrainz-import-mode"
-				bind:value={listenbrainzMode}
+				name="mode"
 				items={listenbrainzModes}
 				placeholder="Select an import mode"
 				contentProps={{ sideOffset: 16 }}
+				required
 			>
 				{#each listenbrainzModes as mode}
 					<SelectItem value={mode.value} label={mode.label}>{mode.label}</SelectItem>

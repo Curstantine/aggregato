@@ -1,8 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { check, index, integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-const ContentStatus = { Approved: "Approved", Deleted: "Deleted", Pending: "Pending" } as const;
-const ReleaseType = { Single: "Single", EP: "EP", Album: "Album" } as const;
+import { ContentStatus, ReleaseType } from "$lib/types/schema";
 
 export const user = sqliteTable("user", {
 	id: text("id").primaryKey(),
