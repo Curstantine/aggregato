@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { enhance } from "$app/forms";
+
 	import Button from "$lib/components/form/Button.svelte";
 	import Input from "$lib/components/form/Input.svelte";
 	import Label from "$lib/components/form/Label.svelte";
 	import SecretInput from "$lib/components/form/SecretInput.svelte";
-
-	import { enhance } from "$app/forms";
 
 	import type { PageProps } from "./$types";
 
@@ -15,7 +15,7 @@
 	<title>Login - Aggregato</title>
 </svelte:head>
 
-<section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">
+<section class="mx-auto flex min-h-svh max-w-md flex-col justify-center p-4">
 	<h1 class="text-xl font-semibold">Login</h1>
 	<span class="text-sm text-muted-foreground">
 		Sign-in to continue, or create an account to get started

@@ -23,9 +23,9 @@ async function getCerts(): Promise<{ key: string; cert: string } | undefined> {
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	server: {
-		https: {
-			...(await getCerts())
-		}
+		// https: {
+		// 	...(await getCerts())
+		// }
 	},
 	test: {
 		workspace: [

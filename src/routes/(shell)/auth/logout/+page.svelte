@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Button from "$lib/components/form/Button.svelte";
-
 	import { enhance } from "$app/forms";
+
+	import Button from "$lib/components/form/Button.svelte";
 
 	import type { PageProps } from "./$types";
 
 	let { data }: PageProps = $props();
 </script>
 
-<section class="mx-auto flex min-h-screen max-w-md flex-col justify-center p-4">
+<section class="mx-auto flex min-h-svh max-w-md flex-col justify-center p-4">
 	<h1 class="text-xl font-semibold">Logout</h1>
 	<span class="text-sm text-muted-foreground"> Are you sure you want to logout? </span>
 

@@ -11,7 +11,8 @@ const handleTheme: Handle = async ({ event, resolve }) => {
 	} = event;
 
 	const useSystem = user === null || user.prefThemeMode === "system";
-	if (useSystem && theme.isSupported(headers) && !theme.hasHeader(headers)) {
+
+	if (useSystem && theme.shouldRequestHeader(headers)) {
 		return new Response(null, {
 			headers: new Headers({
 				"Accept-CH": theme.headerPrefersColorScheme,
