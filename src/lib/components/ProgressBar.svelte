@@ -7,9 +7,9 @@
 	let a = $derived(Math.min(((props.value ?? 0) / props.max) * 100, 100));
 </script>
 
-<Progress.Root {...props} class="bg-background-2 relative h-1 w-full overflow-hidden rounded-full">
+<Progress.Root {...props} class="relative h-1 w-full overflow-hidden rounded-full bg-background-2">
 	<div
-		class="bg-rosemi-500 h-full w-full flex-1 rounded-full transition-all duration-1000 ease-in-out"
+		class="h-full w-full flex-1 rounded-full bg-rosemi-500 transition-all duration-1000 ease-in-out"
 		style={`transform: translateX(-${100 - a}%)`}
 	></div>
 </Progress.Root>

@@ -7,8 +7,7 @@
 		ControlGroupField,
 		ControlGroupHeader
 	} from "$lib/components/ControlGroup";
-	import Button from "$lib/components/form/Button.svelte";
-	import Input from "$lib/components/form/Input.svelte";
+	import { Button, Input } from "$lib/components/form";
 	import { Select, SelectItem } from "$lib/components/Select";
 	import SettingsHeader from "$lib/components/SettingsHeader.svelte";
 

@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
 
-	import Button from "$lib/components/form/Button.svelte";
-	import Input from "$lib/components/form/Input.svelte";
-	import Label from "$lib/components/form/Label.svelte";
-	import SecretInput from "$lib/components/form/SecretInput.svelte";
+	import { Button, Input, Label, SecretInput } from "$lib/components/form";
 
 	import type { PageProps } from "./$types";
 

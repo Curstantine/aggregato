@@ -15,9 +15,8 @@
 		DropdownMenuRadioItem,
 		DropdownMenuSub
 	} from "$lib/components/DropdownMenu";
+	import { Button, Input } from "$lib/components/form";
 	import { Popover } from "$lib/components/Popover";
-	import Button from "$lib/components/form/Button.svelte";
-	import Input from "$lib/components/form/Input.svelte";
 	import ProgressBar from "$lib/components/ProgressBar.svelte";
 </script>
 

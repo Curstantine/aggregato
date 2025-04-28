@@ -4,7 +4,7 @@
 	import { version } from "$app/environment";
 	import { page } from "$app/state";
 
-	import Button from "$lib/components/form/Button.svelte";
+	import { Button } from "$lib/components/form";
 </script>
 
 <Dialog.Root>

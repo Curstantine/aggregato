@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
 
-	import Button from "$lib/components/form/Button.svelte";
+	import { Button } from "$lib/components/form";
 
 	import type { PageProps } from "./$types";
 
