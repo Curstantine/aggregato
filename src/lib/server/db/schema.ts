@@ -1,7 +1,9 @@
 import { relations, sql } from "drizzle-orm";
 import { check, index, integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-import { ContentStatus, ReleaseType } from "$lib/types/schema";
+// Note(Curstantine): We need to use relative imports in this file
+// as drizzle externally reads this file. Only sveltekit can understand $lib aliases
+import { ContentStatus, ReleaseType } from "../../types/schema";
 
 export const user = sqliteTable("user", {
 	id: text("id").primaryKey(),
@@ -9,6 +11,8 @@ export const user = sqliteTable("user", {
 	email: text("email").notNull().unique(),
 	passwordHash: text("password_hash").notNull(),
 	prefThemeMode: text("pref_theme_mode", { enum: ["light", "dark", "system"] }).default("system"),
+	importLastfmUsername: text("import_lastfm_username"),
+	importListenBrainzUsername: text("import_listenbrainz_username"),
 	createdAt: integer("created_at", { mode: "timestamp" }).notNull()
 });
 

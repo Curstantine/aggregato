@@ -1,4 +1,5 @@
-<script lang="ts">
+<script lang="ts" generics="Success extends {}, Failure extends {}">
+	import type { SubmitFunction } from "@sveltejs/kit";
 	import type { Snippet } from "svelte";
 	import type { HTMLFormAttributes } from "svelte/elements";
 
@@ -6,12 +7,12 @@
 
 	interface Props extends Omit<HTMLFormAttributes, "children"> {
 		children: Snippet;
-		enhanceCallback?: Parameters<typeof enhance>[1];
+		submit?: SubmitFunction<Success, Failure>;
 	}
 
-	let { children, enhanceCallback, ...rest }: Props = $props();
+	let { children, submit, ...rest }: Props = $props();
 </script>
 
-<form {...rest} use:enhance={enhanceCallback} class="space-y-3 rounded border border-border p-3">
+<form {...rest} use:enhance={submit} class="space-y-3 rounded border border-border p-3">
 	{@render children()}
 </form>

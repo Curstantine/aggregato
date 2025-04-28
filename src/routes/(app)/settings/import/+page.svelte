@@ -1,6 +1,4 @@
 <script lang="ts">
-	import type { ComponentProps } from "svelte";
-
 	import { applyAction } from "$app/forms";
 
 	import {
@@ -30,7 +28,7 @@
 		{ value: ImportMode.All, label: "All" }
 	];
 
-	const importAction: SubmitFunction = ({ formData, cancel, action }) => {
+	const importAction: SubmitFunction = ({ formData, cancel }) => {
 		formData.set("js-allowed", "true");
 
 		return async ({ result }) => {
@@ -52,9 +50,15 @@
 
 <section id="lastfm">
 	<ControlGroupHeader>Last.fm</ControlGroupHeader>
-	<ControlGroup method="POST" action="?/lastfm" enhanceCallback={importAction}>
+	<ControlGroup method="POST" action="?/lastfm" submit={importAction}>
 		<ControlGroupField id="lastfm-username" label="Your Last.fm username">
-			<Input id="lastfm-username" name="username" placeholder="Last.fm username" required />
+			<Input
+				id="lastfm-username"
+				name="username"
+				placeholder="Last.fm username"
+				defaultValue={data?.lastfmUsername ?? undefined}
+				required
+			/>
 		</ControlGroupField>
 
 		<ControlGroupDivider />
@@ -86,12 +90,13 @@
 
 <section id="listenbrainz" class="mt-4">
 	<ControlGroupHeader>ListenBrainz</ControlGroupHeader>
-	<ControlGroup method="POST" action="?/listenbrainz" enhanceCallback={importAction}>
+	<ControlGroup method="POST" action="?/listenbrainz" submit={importAction}>
 		<ControlGroupField id="listenbrainz-username" label="Your ListenBrainz username">
 			<Input
 				id="listenbrainz-username"
 				name="username"
 				placeholder="ListenBrainz username"
+				defaultValue={data.listenBrainzUsername ?? undefined}
 				required
 			/>
 		</ControlGroupField>

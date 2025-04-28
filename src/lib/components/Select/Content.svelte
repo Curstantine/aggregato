@@ -39,7 +39,7 @@
 	>
 		{selectedLabel ?? placeholder}
 		<span
-			class="iconify size-5 transition-transform duration-emphasized-decelerate ease-emphasized-decelerate material-symbols--keyboard-arrow-down group-aria-expanded:rotate-180"
+			class="iconify size-5 transition-transform material-symbols--keyboard-arrow-down group-aria-expanded:rotate-180"
 		></span>
 	</Select.Trigger>
 	<Select.Portal>
