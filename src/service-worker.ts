@@ -2,6 +2,11 @@
 /// <reference no-default-lib="true"/>
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
+/// <reference types="../.svelte-kit/ambient.d.ts" />
+
+import { createSearchParams } from "@jabascript/core/query";
+
+import { PUBLIC_LASTFM_API_KEY } from "$env/static/public";
 
 import { ImportMode, type ImportModeType } from "./lib/types/form";
 
@@ -29,6 +34,18 @@ sw.addEventListener("message", (event) => {
 });
 
 async function importLastFm(username: string, mode: ImportModeType) {
+	const params = createSearchParams({
+		method: "user.gettopartists",
+		format: "json",
+		user: username,
+		api_key: PUBLIC_LASTFM_API_KEY,
+		limit: { "top-10": "10", "top-50": "50", all: "100" }[mode]
+	});
+
+	const resp = await fetch("https://ws.audioscrobbler.com/2.0?" + params.toString());
+	const body = await resp.json();
+
+	console.dir(body, { depth: null });
 	console.log("lastfm", { username, mode });
 }
 
