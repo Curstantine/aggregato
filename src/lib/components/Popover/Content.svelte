@@ -24,7 +24,7 @@
 	<Popover.Portal>
 		<Popover.Content
 			{...contentProps}
-			class={["bg-background/50  shadow-lg backdrop-blur-lg", contentProps?.class]}
+			class={["bg-background/50 shadow-lg backdrop-blur-lg", contentProps?.class]}
 		>
 			{@render children?.()}
 		</Popover.Content>

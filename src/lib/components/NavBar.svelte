@@ -58,11 +58,11 @@
 
 {#snippet notifications()}
 	<Popover
-		open
 		contentProps={{
 			sideOffset: 16,
+			collisionPadding: 16,
 			align: "end",
-			class: "in-h-24 botched-scroll relative max-h-90 w-80 overflow-y-auto rounded border border-border "
+			class: "botched-scroll relative max-h-90 w-[calc(100vw---spacing(8))] sm:w-80 overflow-y-auto rounded border border-border"
 		}}
 	>
 		{#snippet button(props)}
@@ -130,7 +130,7 @@
 							intent="ghost"
 							aria-label="Remove notification"
 							onclick={() => removeNotification(notification.id)}
-							class="absolute right-1 bottom-1 opacity-0 group-hover:opacity-100"
+							class="absolute right-1 bottom-1 group-hover:opacity-100 sm:opacity-0"
 						>
 							<span class="iconify size-4 material-symbols--delete-outline-rounded"
 							></span>

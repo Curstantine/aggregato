@@ -12,7 +12,7 @@ import { PUBLIC_LASTFM_API_KEY } from "$env/static/public";
 import SafeBroadcastChannel from "./lib/client/sw/broadcast";
 import type { LastfmTopArtistData, SwImportMessage } from "./lib/client/sw/types";
 import { parseImportInput } from "./lib/client/sw/utils";
-import { type ImportModeType } from "./lib/types/form";
+import { ImportType, type ImportModeType } from "./lib/types/form";
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
@@ -53,6 +53,7 @@ async function importLastFm(username: string, mode: ImportModeType) {
 
 	if (!resp.ok) {
 		importChannel.postMessage({
+			type: ImportType.Lastfm,
 			status: "failed",
 			message: `Request to Last.fm failed with ${resp.statusText} (${resp.status})`
 		});
@@ -61,7 +62,7 @@ async function importLastFm(username: string, mode: ImportModeType) {
 	}
 
 	importChannel.postMessage({
-		type: "lastfm",
+		type: ImportType.Lastfm,
 		status: "active",
 		message: "Starting Last.fm import",
 		current: 0,
@@ -74,7 +75,7 @@ async function importLastFm(username: string, mode: ImportModeType) {
 		const artist = body.topartists.artist[i];
 
 		importChannel.postMessage({
-			type: "lastfm",
+			type: ImportType.Lastfm,
 			status: "active",
 			message: `Resolving ${artist.name}`,
 			current: i + 1,
@@ -85,7 +86,7 @@ async function importLastFm(username: string, mode: ImportModeType) {
 	}
 
 	importChannel.postMessage({
-		type: "lastfm",
+		type: ImportType.Lastfm,
 		status: "completed",
 		message: `Imported ${body.topartists.artist.length} artists`
 	});

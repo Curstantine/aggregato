@@ -1,9 +1,15 @@
 <script lang="ts">
 	import { applyAction } from "$app/forms";
 
-	import { upsertNotification } from "$lib/client/state/notification.svelte";
+	import {
+		addNotification,
+		removeNotification,
+		upsertNotification
+	} from "$lib/client/state/notification.svelte";
 	import SafeBroadcastChannel from "$lib/client/sw/broadcast";
 	import type { SwImportMessage } from "$lib/client/sw/types";
+
+	import { ImportMode } from "$lib/types/form";
 
 	import {
 		ControlGroup,
@@ -14,8 +20,6 @@
 	import { Button, Input } from "$lib/components/form";
 	import { Select, SelectItem } from "$lib/components/Select";
 	import SettingsHeader from "$lib/components/SettingsHeader.svelte";
-
-	import { ImportMode } from "$lib/types/form";
 
 	import type { PageProps, SubmitFunction } from "./$types";
 
@@ -41,13 +45,23 @@
 					...result.data.params
 				});
 
+				const noticeIdx = addNotification({
+					label: "Import queued in the background",
+					description:
+						"You can close this tab now, but make sure not to close the browser window."
+				});
+
 				const importChannel = new SafeBroadcastChannel<SwImportMessage>("sw-import");
 				let idx: string | null = null;
 
+				// Note(Curstantine):
+				// NEVER do anything stateful here. This is purely for display purposes.
+				// The user can, and will, navigate to another page or close the tab,
+				// so make sure to let ONLY the service worker do anything useful.
 				const listener = (ev: MessageEvent<SwImportMessage>) => {
 					if (ev.data.status === "active") {
 						idx = upsertNotification(idx, {
-							label: `Importing last.fm artists (${ev.data.current}/${ev.data.total})`,
+							label: `Importing ${ev.data.type} artists (${ev.data.current}/${ev.data.total})`,
 							description: ev.data.message,
 							progress: [ev.data.current ?? 0, ev.data.total ?? 0]
 						});
@@ -56,15 +70,20 @@
 
 					if (ev.data.status === "completed") {
 						upsertNotification(idx, {
-							label: "Import was completed successfully",
+							label: `${ev.data.type} import was completed successfully`,
 							description: ev.data.message,
 							progress: undefined
 						});
 					}
 
-					// TODO: Show errors in the notifications
-					// if (ev.data.status === "failed") {}
+					if (ev.data.status === "failed") {
+						upsertNotification(idx, {
+							label: `${ev.data.type} import failed`,
+							description: ev.data.message
+						});
+					}
 
+					removeNotification(noticeIdx);
 					importChannel.removeEventListener("message", listener);
 				};
 

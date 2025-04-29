@@ -1,8 +1,11 @@
-export type SwImportMessage = SwImportData | SwImportError;
+import type { ImportTypeType } from "$lib/types/form";
+
+export type SwImportMessage = (SwImportData | SwImportError) & {
+	type: ImportTypeType;
+};
 
 export type SwImportData = {
 	status: "active" | "completed";
-	type: "lastfm" | "listenbrainz";
 	message: string;
 	current?: number;
 	total?: number;

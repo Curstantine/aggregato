@@ -5,9 +5,11 @@
 	import { page } from "$app/state";
 
 	import { Button } from "$lib/components/form";
+
+	let open = $state(false);
 </script>
 
-<Dialog.Root>
+<Dialog.Root bind:open>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button {...props} size="square" intent="border" class="absolute right-4 md:hidden">
@@ -60,6 +62,7 @@
 		{href}
 		aria-current={page.url.pathname === href}
 		class="grid h-9 grid-cols-[--spacing(5)_1fr] items-center gap-3 rounded px-3 text-sm transition-colors aria-current:bg-background-2"
+		onclick={() => (open = false)}
 	>
 		<span class={["iconify size-5 text-rosemi-500", icon]}></span>
 		{label}
