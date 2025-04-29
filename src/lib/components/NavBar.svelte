@@ -143,7 +143,7 @@
 {/snippet}
 
 {#snippet profile()}
-	<DropdownMenu contentProps={{ sideOffset: 16, align: "end", class: "!min-w-52" }}>
+	<DropdownMenu contentProps={{ sideOffset: 16, align: "end", class: "!min-w-44 sm:!min-w-52" }}>
 		{#snippet button(props)}
 			<Button
 				{...props}
