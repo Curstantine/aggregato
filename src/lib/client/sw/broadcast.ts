@@ -1,4 +1,4 @@
-export default class SafeBroadcastChannel<T, E = T> {
+export default class SafeBroadcastChannel<T> {
 	name: string;
 	self: BroadcastChannel;
 
@@ -15,34 +15,24 @@ export default class SafeBroadcastChannel<T, E = T> {
 		this.self.close();
 	}
 
-	addEventListener<K extends keyof BroadcastChannelEventMapExt<T, E>>(
+	addEventListener<K extends keyof BroadcastChannelEventMapExt<T>>(
 		type: K,
-		listener: (this: BroadcastChannel, ev: BroadcastChannelEventMapExt<T, E>[K]) => void,
-		options?: boolean | AddEventListenerOptions
-	): void;
-	addEventListener(
-		type: string,
-		listener: EventListenerOrEventListenerObject,
+		listener: (this: BroadcastChannel, ev: BroadcastChannelEventMapExt<T>[K]) => void,
 		options?: boolean | AddEventListenerOptions
 	): void {
 		this.self.addEventListener(type, listener, options);
 	}
 
-	removeEventListener<K extends keyof BroadcastChannelEventMapExt<T, E>>(
+	removeEventListener<K extends keyof BroadcastChannelEventMapExt<T>>(
 		type: K,
-		listener: (this: BroadcastChannel, ev: BroadcastChannelEventMapExt<T, E>[K]) => void,
-		options?: boolean | EventListenerOptions
-	): void;
-	removeEventListener(
-		type: string,
-		listener: EventListenerOrEventListenerObject,
+		listener: (this: BroadcastChannel, ev: BroadcastChannelEventMapExt<T>[K]) => void,
 		options?: boolean | EventListenerOptions
 	): void {
 		this.self.removeEventListener(type, listener, options);
 	}
 }
 
-interface BroadcastChannelEventMapExt<T, E> {
+interface BroadcastChannelEventMapExt<T> {
 	message: MessageEvent<T>;
-	messageerror: MessageEvent<E>;
+	messageerror: MessageEvent;
 }

@@ -61,7 +61,7 @@
 		contentProps={{
 			sideOffset: 16,
 			align: "end",
-			class: "in-h-24 botched-scroll relative max-h-90 min-w-80 overflow-y-auto rounded border border-border "
+			class: "in-h-24 botched-scroll relative max-h-90 w-80 overflow-y-auto rounded border border-border "
 		}}
 	>
 		{#snippet button(props)}
@@ -94,17 +94,24 @@
 		</div>
 
 		<div class="flex flex-col">
+			{#if notificationState.active.length === 0}
+				<div class="flex h-12 items-center justify-center text-center">
+					<span class="text-sm">Nothing to show here</span>
+				</div>
+			{/if}
+
 			{#each notificationState.active as notification}
-				{@const id = useId()}
 				<div class="flex flex-col border-b border-border p-2 last:border-b-0">
-					<span {id} class="text-sm">{notification.label}</span>
-					<span class="mb-1 text-xs text-muted-foreground">
-						{notification.progress} of {notification.endStep}
+					<span id={notification.id} class="line-clamp-1 text-sm">
+						{notification.label}
+					</span>
+					<span class="mb-2 text-xs text-muted-foreground">
+						{notification.description}
 					</span>
 					<ProgressBar
-						aria-labelledby={id}
-						value={notification.progress}
-						max={notification.endStep}
+						aria-labelledby={notification.id}
+						value={notification.progress[0]}
+						max={notification.progress[1]}
 					/>
 				</div>
 			{/each}

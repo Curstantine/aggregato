@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { applyAction } from "$app/forms";
 
+	import { upsertNotification } from "$lib/client/state/notification.svelte";
+	import SafeBroadcastChannel from "$lib/client/sw/broadcast";
+	import type { SwImportMessage } from "$lib/client/sw/types";
+
 	import {
 		ControlGroup,
 		ControlGroupDivider,
@@ -36,6 +40,35 @@
 					type: result.data.type,
 					...result.data.params
 				});
+
+				const importChannel = new SafeBroadcastChannel<SwImportMessage>("sw-import");
+				let idx: string | null = null;
+
+				const listener = (ev: MessageEvent<SwImportMessage>) => {
+					if (ev.data.status === "active") {
+						idx = upsertNotification(idx, {
+							label: `Importing last.fm artists (${ev.data.current}/${ev.data.total})`,
+							description: ev.data.message,
+							progress: [ev.data.current ?? 0, ev.data.total ?? 0]
+						});
+						return;
+					}
+
+					if (ev.data.status === "completed") {
+						upsertNotification(idx, {
+							label: "Last.fm import was completed successfully",
+							description: "Check",
+							progress: [0, 10]
+						});
+					}
+
+					// TODO: Show errors in the notifications
+					// if (ev.data.status === "failed") {}
+
+					importChannel.removeEventListener("message", listener);
+				};
+
+				importChannel.addEventListener("message", listener);
 			}
 
 			await applyAction(result);

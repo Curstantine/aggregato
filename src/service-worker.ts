@@ -4,16 +4,19 @@
 /// <reference lib="webworker" />
 /// <reference types="../.svelte-kit/ambient.d.ts" />
 
+import { wait } from "@jabascript/core";
 import { createSearchParams } from "@jabascript/core/query";
 
 import { PUBLIC_LASTFM_API_KEY } from "$env/static/public";
 
-import { createImportChannel, parseImportInput } from "./lib/client/sw";
+import SafeBroadcastChannel from "./lib/client/sw/broadcast";
+import type { LastfmTopArtistData, SwImportMessage } from "./lib/client/sw/types";
+import { parseImportInput } from "./lib/client/sw/utils";
 import { type ImportModeType } from "./lib/types/form";
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
-const importChannel = createImportChannel();
+const importChannel = new SafeBroadcastChannel<SwImportMessage>("sw-import");
 
 sw.addEventListener("install", () => {
 	sw.skipWaiting();
@@ -46,12 +49,48 @@ async function importLastFm(username: string, mode: ImportModeType) {
 	});
 
 	const resp = await fetch("https://ws.audioscrobbler.com/2.0?" + params.toString());
-	const body = await resp.json();
+	const body = (await resp.json()) as LastfmTopArtistData;
 
-	importChannel.postMessage("");
+	if (!resp.ok) {
+		importChannel.postMessage({
+			status: "failed",
+			message: `Request to Last.fm failed with ${resp.statusText} (${resp.status})`
+		});
+
+		return;
+	}
+
+	importChannel.postMessage({
+		type: "lastfm",
+		status: "active",
+		message: "Starting Last.fm import",
+		current: 0,
+		total: body.topartists.artist.length
+	});
+
+	await wait(1000);
+
+	for (let i = 0; i < body.topartists.artist.length; i++) {
+		const artist = body.topartists.artist[i];
+
+		importChannel.postMessage({
+			type: "lastfm",
+			status: "active",
+			message: `Resolving ${artist.name}`,
+			current: i + 1,
+			total: body.topartists.artist.length
+		});
+
+		await wait(1000);
+	}
+
+	importChannel.postMessage({
+		type: "lastfm",
+		status: "completed",
+		message: "Import complete"
+	});
 
 	console.dir(body, { depth: null });
-	console.log("lastfm", { username, mode });
 }
 
 async function importListenBrainz(username: string, mode: ImportModeType) {
