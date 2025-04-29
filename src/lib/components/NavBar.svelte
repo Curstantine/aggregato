@@ -104,7 +104,7 @@
 		<div class="flex flex-col">
 			{#if notificationState.data.length === 0}
 				<div class="flex h-14 items-center justify-center text-center">
-					<span class="text-sm">Nothing to show here</span>
+					<span class="text-sm">Nothing to see here</span>
 				</div>
 			{/if}
 
