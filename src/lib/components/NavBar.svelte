@@ -5,8 +5,8 @@
 		useId
 	} from "bits-ui";
 
-	import { notificationState } from "$lib/client/notification.svelte";
-	import { setThemeMode, themeState, type ThemeMode } from "$lib/client/theme.svelte";
+	import { notificationState } from "$lib/client/state/notification.svelte";
+	import { setThemeMode, themeState, type ThemeMode } from "$lib/client/state/theme.svelte";
 
 	import {
 		DropdownMenu,

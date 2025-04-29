@@ -8,9 +8,12 @@ import { createSearchParams } from "@jabascript/core/query";
 
 import { PUBLIC_LASTFM_API_KEY } from "$env/static/public";
 
-import { ImportMode, type ImportModeType } from "./lib/types/form";
+import { createImportChannel, parseImportInput } from "./lib/client/sw";
+import { type ImportModeType } from "./lib/types/form";
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
+
+const importChannel = createImportChannel();
 
 sw.addEventListener("install", () => {
 	sw.skipWaiting();
@@ -45,19 +48,12 @@ async function importLastFm(username: string, mode: ImportModeType) {
 	const resp = await fetch("https://ws.audioscrobbler.com/2.0?" + params.toString());
 	const body = await resp.json();
 
+	importChannel.postMessage("");
+
 	console.dir(body, { depth: null });
 	console.log("lastfm", { username, mode });
 }
 
 async function importListenBrainz(username: string, mode: ImportModeType) {
 	console.log("listenbrainz", { username, mode });
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function parseImportInput(data: any) {
-	if (typeof data.username !== "string" && !Object.values(ImportMode).includes(data.mode)) {
-		throw Error("Invalid input. import-lastfm requires (username: string, mode: ImportMode)");
-	}
-
-	return { username: data.username as string, mode: data.mode as ImportModeType };
 }
