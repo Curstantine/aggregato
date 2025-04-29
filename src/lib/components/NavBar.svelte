@@ -5,7 +5,7 @@
 		useId
 	} from "bits-ui";
 
-	import { notificationState } from "$lib/client/state/notification.svelte";
+	import { notificationState, removeNotification } from "$lib/client/state/notification.svelte";
 	import { setThemeMode, themeState, type ThemeMode } from "$lib/client/state/theme.svelte";
 
 	import {
@@ -58,6 +58,7 @@
 
 {#snippet notifications()}
 	<Popover
+		open
 		contentProps={{
 			sideOffset: 16,
 			align: "end",
@@ -70,10 +71,17 @@
 				intent="ghost"
 				size="square"
 				aria-label="Open notifications"
-				class="group grid grid-cols-1 place-items-center aria-expanded:text-rosemi-500"
+				class="group relative grid grid-cols-1 place-items-center aria-expanded:text-rosemi-500"
 			>
 				<span
 					class="iconify size-5 transition-transform material-symbols--notifications-outline-rounded group-[[aria-expanded='true']]:rotate-4"
+				></span>
+
+				<span
+					class={[
+						"absolute right-1.5 bottom-1 size-2.5 rounded-full bg-rosemi-500 opacity-0 transition-opacity group-[[aria-expanded='true']]:opacity-0",
+						notificationState.data.length > 0 && "opacity-100"
+					]}
 				></span>
 			</Button>
 		{/snippet}
@@ -94,25 +102,40 @@
 		</div>
 
 		<div class="flex flex-col">
-			{#if notificationState.active.length === 0}
-				<div class="flex h-12 items-center justify-center text-center">
+			{#if notificationState.data.length === 0}
+				<div class="flex h-14 items-center justify-center text-center">
 					<span class="text-sm">Nothing to show here</span>
 				</div>
 			{/if}
 
-			{#each notificationState.active as notification}
-				<div class="flex flex-col border-b border-border p-2 last:border-b-0">
+			{#each notificationState.data as notification}
+				<div
+					class="group relative flex flex-col border-b border-border p-2 last:border-b-0"
+				>
 					<span id={notification.id} class="line-clamp-1 text-sm">
 						{notification.label}
 					</span>
 					<span class="mb-2 text-xs text-muted-foreground">
 						{notification.description}
 					</span>
-					<ProgressBar
-						aria-labelledby={notification.id}
-						value={notification.progress[0]}
-						max={notification.progress[1]}
-					/>
+					{#if notification.progress}
+						<ProgressBar
+							aria-labelledby={notification.id}
+							value={notification.progress[0]}
+							max={notification.progress[1]}
+						/>
+					{:else}
+						<Button
+							size="squareSmall"
+							intent="ghost"
+							aria-label="Remove notification"
+							onclick={() => removeNotification(notification.id)}
+							class="absolute right-1 bottom-1 opacity-0 group-hover:opacity-100"
+						>
+							<span class="iconify size-4 material-symbols--delete-outline-rounded"
+							></span>
+						</Button>
+					{/if}
 				</div>
 			{/each}
 		</div>

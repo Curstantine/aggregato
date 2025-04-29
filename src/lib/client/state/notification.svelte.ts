@@ -1,34 +1,34 @@
-type ActiveNotification = {
+type Notification = {
 	id: string;
 	label: string;
 	description: string;
-	progress: [number, number];
+	progress?: [number, number];
 };
 
 export const notificationState = $state({
-	active: [] as ActiveNotification[]
+	data: [] as Notification[]
 });
 
-export function addNotification(payload: Omit<ActiveNotification, "id">): string {
+export function addNotification(payload: Omit<Notification, "id">): string {
 	const id = crypto.randomUUID();
-	notificationState.active.push({ ...payload, id });
+	notificationState.data.push({ ...payload, id });
 	return id;
 }
 
 export function removeNotification(id: string) {
-	notificationState.active = notificationState.active.filter((x) => x.id !== id);
+	notificationState.data = notificationState.data.filter((x) => x.id !== id);
 }
 
-export function updateNotification(id: string, payload: Partial<Omit<ActiveNotification, "id">>) {
-	const idx = notificationState.active.findIndex((x) => x.id === id);
+export function updateNotification(id: string, payload: Partial<Omit<Notification, "id">>) {
+	const idx = notificationState.data.findIndex((x) => x.id === id);
 	if (idx !== -1) {
-		notificationState.active[idx] = { ...notificationState.active[idx], ...payload };
+		notificationState.data[idx] = { ...notificationState.data[idx], ...payload };
 	}
 }
 
 export function upsertNotification(
 	id: string | null | undefined,
-	payload: Omit<ActiveNotification, "id">
+	payload: Omit<Notification, "id">
 ): string {
 	if (id) {
 		updateNotification(id, payload);

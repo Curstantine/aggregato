@@ -56,9 +56,9 @@
 
 					if (ev.data.status === "completed") {
 						upsertNotification(idx, {
-							label: "Last.fm import was completed successfully",
-							description: "Check",
-							progress: [0, 10]
+							label: "Import was completed successfully",
+							description: ev.data.message,
+							progress: undefined
 						});
 					}
 

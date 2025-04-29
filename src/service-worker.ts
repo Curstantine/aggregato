@@ -87,7 +87,7 @@ async function importLastFm(username: string, mode: ImportModeType) {
 	importChannel.postMessage({
 		type: "lastfm",
 		status: "completed",
-		message: "Import complete"
+		message: `Imported ${body.topartists.artist.length} artists`
 	});
 
 	console.dir(body, { depth: null });
