@@ -14,15 +14,20 @@
 		"arktype",
 		"Bandcamp",
 		"bezier",
+		"extralarge",
+		"gettopartists",
 		"iconify",
 		"jabascript",
 		"klass",
+		"MusicBrainz",
 		"ListenBrainz",
+		"mbid",
 		"oklch",
 		"oslojs",
 		"rosemi",
 		"scrobbled",
 		"Scrobbles",
+		"topartists",
 		"visiblity"
 	]
 }

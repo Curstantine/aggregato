@@ -12,7 +12,12 @@
 <Dialog.Root bind:open>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
-			<Button {...props} size="square" intent="border" class="absolute right-4 md:hidden">
+			<Button
+				{...props}
+				size="square"
+				intent="border"
+				class="absolute top-19 right-7 md:hidden"
+			>
 				<span class="iconify size-5 material-symbols--menu-rounded"></span>
 			</Button>
 		{/snippet}

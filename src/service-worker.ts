@@ -12,7 +12,9 @@ import { PUBLIC_LASTFM_API_KEY } from "$env/static/public";
 import SafeBroadcastChannel from "./lib/client/sw/broadcast";
 import type { LastfmTopArtistData, SwImportMessage } from "./lib/client/sw/types";
 import { parseImportInput } from "./lib/client/sw/utils";
+
 import { ImportType, type ImportModeType } from "./lib/types/form";
+import type { ImportArtistBodyType } from "./lib/types/validator-shims";
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
@@ -20,7 +22,6 @@ const importChannel = new SafeBroadcastChannel<SwImportMessage>("sw-import");
 
 sw.addEventListener("install", () => {
 	sw.skipWaiting();
-	console.log("Service worker installed");
 });
 
 sw.addEventListener("activate", (event) => {
@@ -69,10 +70,31 @@ async function importLastFm(username: string, mode: ImportModeType) {
 		total: body.topartists.artist.length
 	});
 
-	await wait(1000);
-
 	for (let i = 0; i < body.topartists.artist.length; i++) {
 		const artist = body.topartists.artist[i];
+
+		const resp = await fetch("/settings/api/import-artist", {
+			method: "POST",
+			body: JSON.stringify({
+				name: artist.name,
+				mbid: artist.mbid + "i",
+				cover:
+					artist.image.find((x) => x.size === "extralarge")?.["#text"] ??
+					artist.image[artist.image.length - 1]["#text"],
+				lastfmUrl: artist.url
+			} as ImportArtistBodyType)
+		});
+
+		if (!resp.ok) {
+			const error = (await resp.json()) as App.Error;
+			importChannel.postMessage({
+				type: ImportType.Lastfm,
+				status: "failed",
+				message: error.message
+			});
+
+			return;
+		}
 
 		importChannel.postMessage({
 			type: ImportType.Lastfm,
