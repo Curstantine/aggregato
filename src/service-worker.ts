@@ -7,6 +7,7 @@
 import { wait } from "@jabascript/core";
 import { createURL } from "@jabascript/query";
 
+import { build, files, version } from "$service-worker";
 import { PUBLIC_LASTFM_API_KEY } from "$env/static/public";
 
 import SafeBroadcastChannel from "./lib/client/sw/broadcast";
@@ -16,16 +17,69 @@ import { parseImportInput } from "./lib/client/sw/utils";
 import { ImportType, type ImportModeType } from "./lib/types/form";
 import type { ImportArtistBodyType } from "./lib/types/validator-shims";
 
-const sw = self as unknown as ServiceWorkerGlobalScope;
+const CACHE = `cache-${version}`;
+const ASSETS = [...build, ...files];
 
+const sw = self as unknown as ServiceWorkerGlobalScope;
 const importChannel = new SafeBroadcastChannel<SwImportMessage>("sw-import");
 
-sw.addEventListener("install", () => {
-	sw.skipWaiting();
+sw.addEventListener("install", (event) => {
+	async function addFilesToCache() {
+		const cache = await caches.open(CACHE);
+		await cache.addAll(ASSETS);
+	}
+
+	event.waitUntil(addFilesToCache());
 });
 
 sw.addEventListener("activate", (event) => {
+	async function deleteOldCaches() {
+		for (const key of await caches.keys()) {
+			if (key !== CACHE) await caches.delete(key);
+		}
+	}
+
+	event.waitUntil(deleteOldCaches());
 	event.waitUntil(sw.clients.claim());
+});
+
+sw.addEventListener("fetch", (event) => {
+	if (event.request.method !== "GET") return;
+
+	async function respond() {
+		const url = new URL(event.request.url);
+		const cache = await caches.open(CACHE);
+
+		if (ASSETS.includes(url.pathname)) {
+			const response = await cache.match(url.pathname);
+			if (response) return response;
+		}
+
+		try {
+			const response = await fetch(event.request);
+
+			// Note: if we're offline, fetch can return a value that is not a Response
+			if (!(response instanceof Response)) {
+				throw new Error("invalid response from fetch");
+			}
+
+			if (response.status === 200) {
+				cache.put(event.request, response.clone());
+			}
+
+			return response;
+		} catch (err) {
+			const response = await cache.match(event.request);
+
+			if (response) {
+				return response;
+			}
+
+			throw err;
+		}
+	}
+
+	event.respondWith(respond());
 });
 
 sw.addEventListener("message", (event) => {
@@ -73,16 +127,18 @@ async function importLastFm(username: string, mode: ImportModeType) {
 	for (let i = 0; i < body.topartists.artist.length; i++) {
 		const artist = body.topartists.artist[i];
 
+		const payload: ImportArtistBodyType = {
+			name: artist.name,
+			musicbrainzId: artist.mbid + "i",
+			lastfmUrl: artist.url,
+			cover:
+				artist.image.find((x) => x.size === "extralarge")?.["#text"] ??
+				artist.image[artist.image.length - 1]["#text"]
+		};
 		const resp = await fetch("/settings/api/import-artist", {
 			method: "POST",
-			body: JSON.stringify({
-				name: artist.name,
-				mbid: artist.mbid + "i",
-				cover:
-					artist.image.find((x) => x.size === "extralarge")?.["#text"] ??
-					artist.image[artist.image.length - 1]["#text"],
-				lastfmUrl: artist.url
-			} as ImportArtistBodyType)
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(payload)
 		});
 
 		if (!resp.ok) {

@@ -32,5 +32,6 @@
 		"unixepoch",
 		"url-rels",
 		"visiblity"
-	]
+	],
+	"typescript.tsdk": "node_modules\\typescript\\lib"
 }
