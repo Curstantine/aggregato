@@ -13,7 +13,9 @@ export const user = sqliteTable("user", {
 	prefThemeMode: text("pref_theme_mode", { enum: ["light", "dark", "system"] }).default("system"),
 	importLastfmUsername: text("import_lastfm_username"),
 	importListenBrainzUsername: text("import_listenbrainz_username"),
-	createdAt: integer("created_at", { mode: "timestamp" }).notNull()
+	createdAt: integer("created_at", { mode: "timestamp" })
+		.notNull()
+		.default(sql`(unixepoch())`)
 });
 
 export const session = sqliteTable("session", {
@@ -29,26 +31,36 @@ export const artist = sqliteTable(
 	{
 		id: text("id").primaryKey(),
 		name: text("name").notNull(),
-		nativeName: text("nativeName"),
 		status: text("status", {
 			enum: [ContentStatus.Approved, ContentStatus.Deleted, ContentStatus.Pending]
-		}),
-		createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+		}).notNull(),
+		createdAt: integer("created_at", { mode: "timestamp" })
+			.notNull()
+			.default(sql`(unixepoch())`),
 
-		externalLastfm: text("external_lastfm"),
-		externalListenBrainz: text("external_listenbrainz"),
-		externalAppleMusic: text("external_apple_music"),
-		externalYouTubeMusic: text("external_youtube_music"),
-		externalSpotify: text("external_spotify")
+		externalLastfmLink: text("external_lastfm_link").unique(),
+		externalMusicBrainzId: text("external_musicbrainz_id").unique(),
+		externalAppleMusicId: text("external_apple_music_id").unique(),
+		externalYouTubeMusicId: text("external_youtube_music_id").unique(),
+		externalSpotifyId: text("external_spotify_id").unique(),
+		externalDeezerId: text("external_deezer_id").unique()
 	},
 	(table) => [
 		index("artist_name_idx").on(table.name),
 		check(
 			"artist_at_least_one_external_link",
-			sql`${table.externalLastfm} is not null or ${table.externalListenBrainz} is not null or ${table.externalAppleMusic} is not null or ${table.externalYouTubeMusic} is not null or ${table.externalSpotify} is not null`
+			sql`${table.externalLastfmLink} is not null or ${table.externalMusicBrainzId} is not null or ${table.externalAppleMusicId} is not null or ${table.externalYouTubeMusicId} is not null or ${table.externalSpotifyId} is not null or ${table.externalDeezerId} is not null`
 		)
 	]
 );
+
+export const artistAlias = sqliteTable("artist_alias", {
+	id: text("id").primaryKey(),
+	name: text("name").notNull(),
+	artistId: text("artistId")
+		.notNull()
+		.references(() => artist.id, { onDelete: "cascade" })
+});
 
 export const artistRelations = relations(artist, ({ many }) => ({
 	artistsToRelease: many(artistsToReleases)
@@ -60,21 +72,26 @@ export const release = sqliteTable(
 		id: text("id").primaryKey(),
 		name: text("name").notNull(),
 		nativeName: text("nativeName"),
-		type: text("type", { enum: [ReleaseType.Single, ReleaseType.EP, ReleaseType.Album] }),
-		status: text("status", { enum: [ContentStatus.Approved, ContentStatus.Deleted] }),
-		createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+		type: text("type", {
+			enum: [ReleaseType.Single, ReleaseType.EP, ReleaseType.Album]
+		}).notNull(),
+		status: text("status", { enum: [ContentStatus.Approved, ContentStatus.Deleted] }).notNull(),
+		createdAt: integer("created_at", { mode: "timestamp" })
+			.notNull()
+			.default(sql`(unixepoch())`),
 
-		externalLastfm: text("external_lastfm"),
-		externalListenBrainz: text("external_listenbrainz"),
-		externalAppleMusic: text("external_apple_music"),
-		externalYouTubeMusic: text("external_youtube_music"),
-		externalSpotify: text("external_spotify")
+		externalLastfmLink: text("external_lastfm_link").unique(),
+		externalMusicBrainzId: text("external_musicbrainz_id").unique(),
+		externalAppleMusicId: text("external_apple_music_id").unique(),
+		externalYouTubeMusicId: text("external_youtube_music_id").unique(),
+		externalSpotifyId: text("external_spotify_id").unique(),
+		externalDeezerId: text("external_deezer_id").unique()
 	},
 	(table) => [
 		index("release_name_idx").on(table.name),
 		check(
 			"release_at_least_one_external_link",
-			sql`${table.externalLastfm} is not null or ${table.externalListenBrainz} is not null or ${table.externalAppleMusic} is not null or ${table.externalYouTubeMusic} is not null or ${table.externalSpotify} is not null`
+			sql`${table.externalLastfmLink} is not null or ${table.externalMusicBrainzId} is not null or ${table.externalAppleMusicId} is not null or ${table.externalYouTubeMusicId} is not null or ${table.externalSpotifyId} is not null or ${table.externalDeezerId} is not null`
 		)
 	]
 );
@@ -104,4 +121,5 @@ export const artistsToReleasesRelations = relations(artistsToReleases, ({ one })
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type Artist = typeof artist.$inferSelect;
+export type ArtistAlias = typeof artistAlias.$inferSelect;
 export type Release = typeof artist.$inferSelect;

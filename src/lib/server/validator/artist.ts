@@ -5,10 +5,22 @@ export const ImportArtistBody = type({
 	"cover?": "string.url",
 
 	"spotifyId?": "0 < string <= 22",
-	"appleId?": "string.numeric",
+	"appleMusicId?": "string.numeric",
 	"lastfmUrl?": "string.url",
-	"mbid?": "string"
+	"youtubeMusicId?": "string",
+	"musicbrainzId?": "string.uuid",
+	"deezerId?": "string.numeric"
 }).narrow((n, ctx) => {
-	if (n.appleId || n.spotifyId || n.lastfmUrl || n.mbid) return true;
+	if (
+		n.appleMusicId ||
+		n.spotifyId ||
+		n.lastfmUrl ||
+		n.youtubeMusicId ||
+		n.musicbrainzId ||
+		n.deezerId
+	) {
+		return true;
+	}
+
 	return ctx.reject("one of identifiers to be populated");
 });

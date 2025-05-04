@@ -1,11 +1,11 @@
 import { hash } from "@node-rs/argon2";
-import { encodeBase32LowerCase } from "@oslojs/encoding";
 import { fail, redirect } from "@sveltejs/kit";
 import { type } from "arktype";
 
 import * as auth from "$lib/server/auth";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
+import { generateRandomId } from "$lib/server/utils";
 import { arkFormParser, toSerArkErrors } from "$lib/server/validator/utils";
 
 import type { Actions, PageServerLoad } from "./$types";
@@ -43,7 +43,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const userId = generateUserId();
+		const userId = generateRandomId();
 		const passwordHash = await hash(out.password, {
 			memoryCost: 19456,
 			timeCost: 2,
@@ -71,10 +71,3 @@ export const actions: Actions = {
 		redirect(302, "/");
 	}
 };
-
-function generateUserId() {
-	// ID with 120 bits of entropy, or about the same as UUID v4.
-	const bytes = crypto.getRandomValues(new Uint8Array(15));
-	const id = encodeBase32LowerCase(bytes);
-	return id;
-}
