@@ -22,7 +22,16 @@ export const session = sqliteTable("session", {
 	id: text("id").primaryKey(),
 	userId: text("user_id")
 		.notNull()
-		.references(() => user.id),
+		.references(() => user.id, { onDelete: "cascade" }),
+	expiresAt: integer("expires_at", { mode: "timestamp" }).notNull()
+});
+
+export const passwordResetSession = sqliteTable("password_reset_session", {
+	id: text("id").primaryKey(),
+	userId: text("user_id")
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
+	code: text("code").notNull(),
 	expiresAt: integer("expires_at", { mode: "timestamp" }).notNull()
 });
 
@@ -106,6 +115,7 @@ export const artistsToReleases = sqliteTable(
 );
 
 export type Session = typeof session.$inferSelect;
+export type PasswordResetSession = typeof passwordResetSession.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type Artist = typeof artist.$inferSelect;
 export type ArtistAlias = typeof artistAlias.$inferSelect;

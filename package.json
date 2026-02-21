@@ -59,6 +59,7 @@
 		"arktype": "^2.1.29",
 		"bits-ui": "^2.16.1",
 		"drizzle-orm": "1.0.0-beta.15-859cf75",
+		"resend": "^6.9.2",
 		"ua-parser-js": "^2.0.9"
 	},
 	"pnpm": {
