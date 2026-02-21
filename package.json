@@ -31,7 +31,7 @@
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/svelte": "^5.3.1",
 		"@types/node": "^24.10.13",
-		"drizzle-kit": "^0.31.9",
+		"drizzle-kit": "1.0.0-beta.15-859cf75",
 		"eslint": "^10.0.1",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.15.0",
@@ -58,7 +58,7 @@
 		"@oslojs/encoding": "^1.1.0",
 		"arktype": "^2.1.29",
 		"bits-ui": "^2.16.1",
-		"drizzle-orm": "^0.45.1",
+		"drizzle-orm": "1.0.0-beta.15-859cf75",
 		"ua-parser-js": "^2.0.9"
 	},
 	"pnpm": {

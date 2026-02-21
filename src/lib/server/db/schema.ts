@@ -1,4 +1,4 @@
-import { relations, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { check, index, integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 // Note(Curstantine): We need to use relative imports in this file
@@ -62,10 +62,6 @@ export const artistAlias = sqliteTable("artist_alias", {
 		.references(() => artist.id, { onDelete: "cascade" })
 });
 
-export const artistRelations = relations(artist, ({ many }) => ({
-	artistsToRelease: many(artistsToReleases)
-}));
-
 export const release = sqliteTable(
 	"release",
 	{
@@ -96,10 +92,6 @@ export const release = sqliteTable(
 	]
 );
 
-export const releaseRelations = relations(release, ({ many }) => ({
-	artistsToRelease: many(artistsToReleases)
-}));
-
 export const artistsToReleases = sqliteTable(
 	"artists_to_release",
 	{
@@ -112,11 +104,6 @@ export const artistsToReleases = sqliteTable(
 	},
 	(table) => [primaryKey({ columns: [table.releaseId, table.artistId] })]
 );
-
-export const artistsToReleasesRelations = relations(artistsToReleases, ({ one }) => ({
-	artist: one(artist, { fields: [artistsToReleases.artistId], references: [artist.id] }),
-	release: one(release, { fields: [artistsToReleases.releaseId], references: [release.id] })
-}));
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;

@@ -15,9 +15,7 @@ import type { ImportArtistBodyType } from "$lib/types/validator-shims";
 import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-	if (!locals.user) {
-		error(401, { message: "You need to be logged in" });
-	}
+	if (!locals.user) error(401, { message: "You need to be logged in" });
 
 	const body = ImportArtistBody(await request.json());
 	if (body instanceof type.errors) {
