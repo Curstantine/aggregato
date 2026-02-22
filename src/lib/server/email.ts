@@ -10,6 +10,17 @@ export async function sendPasswordResetEmail(
 	resetLink: string,
 	resetToken: string
 ) {
+	if (import.meta.env.DEV) {
+		console.log(
+			"Email sent to:",
+			email,
+			"with reset link:",
+			resetLink,
+			"and token:",
+			resetToken
+		);
+	}
+
 	const { data, error } = await resend.emails.send({
 		from: `${EMAIL_AUTH_NAME} <${EMAIL_AUTH_ADDRESS}>`,
 		to: email,

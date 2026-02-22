@@ -24,7 +24,7 @@ This document provides context for the "aggregato" project, a music aggregation 
 ### Prerequisites
 
 - Node.js and pnpm are required.
-- Set up a Turso database and create a `.env` file with `DATABASE_URL` and `DATABASE_AUTH_TOKEN`. An example is provided in `.env.example`.
+- Set up a Turso database and create a `.env` file with `DATABASE_URL` and `DATABASE_SECRET`. An example is provided in `.env.example`.
 
 ### Commands
 

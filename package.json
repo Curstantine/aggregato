@@ -57,6 +57,7 @@
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"arktype": "^2.1.29",
+		"better-auth": "^1.4.18",
 		"bits-ui": "^2.16.1",
 		"drizzle-orm": "1.0.0-beta.15-859cf75",
 		"resend": "^6.9.2",
