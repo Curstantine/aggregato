@@ -19,20 +19,14 @@ export const relations = defineRelations(schema, (r) => ({
 			to: r.artist.id.through(r.artistsToReleases.artistId)
 		})
 	},
-	session: {
-		user: r.one.user({
-			from: r.session.userId,
-			to: r.user.id
-		})
-	},
 	user: {
 		sessions: r.many.session({
 			from: r.user.id,
 			to: r.session.userId
 		}),
-		passwordResetSessions: r.many.passwordResetSession({
+		accounts: r.many.account({
 			from: r.user.id,
-			to: r.passwordResetSession.userId
+			to: r.account.userId
 		})
 	}
 }));

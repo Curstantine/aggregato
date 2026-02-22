@@ -1,12 +1,9 @@
-import { verify } from "@node-rs/argon2";
 import { fail, redirect } from "@sveltejs/kit";
 import { type } from "arktype";
-import { eq } from "drizzle-orm";
+import { APIError } from "better-auth";
 
-import * as auth from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import * as table from "$lib/server/db/schema";
-import { arkFormParser, toSerArkErrors, type SerArkError } from "$lib/server/validator/utils";
+import { auth } from "$lib/server/auth";
+import { arkFormParser, toSerArkErrors } from "$lib/server/validator/utils";
 
 import type { Actions, PageServerLoad } from "./$types";
 
@@ -16,22 +13,21 @@ export const load: PageServerLoad = async (event) => {
 
 const LoginCredentials = type({
 	username: "string.email | (3 < string.alphanumeric <= 31)",
-	password: "6 < string <= 255"
+	password: "6 < string <= 255",
+	remember: "boolean = false",
+	callbackURL: "string = '/'"
+});
+
+const LoginSocial = type({
+	provider: "'github'",
+	callbackURL: "string = '/'"
 });
 
 const formLoginCredentials = arkFormParser.pipe(LoginCredentials);
+const formLoginSocial = arkFormParser.pipe(LoginSocial);
 
-const INVALID_CRED_ERROR: Record<string, SerArkError> = {
-	username: {
-		message: "Invalid username or password"
-	},
-	password: {
-		message: "Invalid username or password"
-	}
-};
-
-export const actions: Actions = {
-	default: async (event) => {
+export const actions: Actions<ActionUtils.GenericFormActionData> = {
+	email: async (event) => {
 		const formData = await event.request.formData();
 		const out = formLoginCredentials(formData);
 
@@ -43,40 +39,62 @@ export const actions: Actions = {
 		}
 
 		const isEmail = type("string.email").allows(out.username);
-		const results = await db
-			.select()
-			.from(table.user)
-			.limit(1)
-			.where(
-				isEmail ? eq(table.user.email, out.username) : eq(table.user.username, out.username)
-			);
 
-		const existingUser = results.at(0);
-		if (!existingUser) {
+		try {
+			if (isEmail) {
+				await auth.api.signInEmail({
+					body: {
+						email: out.username,
+						password: out.password,
+						rememberMe: out.remember,
+						callbackURL: out.callbackURL
+					}
+				});
+			} else {
+				await auth.api.signInUsername({
+					body: {
+						username: out.username,
+						password: out.password,
+						rememberMe: out.remember,
+						callbackURL: out.callbackURL
+					}
+				});
+			}
+		} catch (error) {
+			console.error("[auth:login]:", error);
+
+			if (error instanceof APIError) {
+				return fail(400, {
+					message: error.message ?? "Failed to login",
+					invalid: undefined
+				});
+			}
+
+			return fail(500, { message: "Unexpected error", invalid: undefined });
+		}
+
+		return redirect(302, out.callbackURL);
+	},
+	social: async (event) => {
+		const formData = await event.request.formData();
+		const out = formLoginSocial(formData);
+
+		if (out instanceof type.errors) {
 			return fail(400, {
-				message: "Incorrect username or password",
-				invalid: INVALID_CRED_ERROR
+				message: "Invalid social login format",
+				invalid: toSerArkErrors(out)
 			});
 		}
 
-		const validPassword = await verify(existingUser.passwordHash, out.password, {
-			memoryCost: 19456,
-			timeCost: 2,
-			outputLen: 32,
-			parallelism: 1
+		const result = await auth.api.signInSocial({
+			body: {
+				provider: out.provider,
+				callbackURL: out.callbackURL
+			}
 		});
-		if (!validPassword) {
-			return fail(400, {
-				message: "Incorrect username or password",
-				invalid: INVALID_CRED_ERROR
-			});
-		}
 
-		const sessionToken = auth.generateSessionToken();
-		const session = await auth.createSession(sessionToken, existingUser.id);
-		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+		if (result.url) return redirect(302, result.url);
 
-		// redirect(302, "/");
-		return { success: true };
+		return fail(400, { message: "Failed to initiate social login", invalid: undefined });
 	}
 };

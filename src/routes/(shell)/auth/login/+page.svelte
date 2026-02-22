@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
 
-	import { Button, Input, Label, SecretInput } from "$lib/components/form";
+	import { Button, Input, Label, LabeledSeparator, SecretInput } from "$lib/components/form";
 
 	import type { PageProps } from "./$types";
 
@@ -18,7 +18,7 @@
 		Sign-in to continue, or create an account to get started
 	</span>
 
-	<form method="post" use:enhance class="mt-6 space-y-3">
+	<form method="post" action="?/email" use:enhance class="mt-6 space-y-3">
 		<Label id="username" label="Email/Username" error={form?.invalid?.username}>
 			<Input
 				id="username"
@@ -42,6 +42,17 @@
 		</div>
 
 		<Button type="submit" class="mt-2 w-full">Continue</Button>
+	</form>
+
+	<LabeledSeparator class="my-4">Or Continue With</LabeledSeparator>
+
+	<form method="post" action="?/social" use:enhance class="space-y-3">
+		<input type="hidden" name="provider" value="github" />
+
+		<Button type="button" intent="border" class="w-full">
+			<span class="mr-1 iconify size-6 bxl--github sm:size-5"></span>
+			Github
+		</Button>
 	</form>
 </section>
 

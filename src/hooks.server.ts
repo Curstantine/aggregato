@@ -1,7 +1,10 @@
 import type { Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
+import { svelteKitHandler } from "better-auth/svelte-kit";
 
-import * as auth from "$lib/server/auth";
+import { building } from "$app/environment";
+
+import { auth, type User } from "$lib/server/auth";
 import * as theme from "$lib/server/theme";
 
 const handleTheme: Handle = async ({ event, resolve }) => {
@@ -10,7 +13,7 @@ const handleTheme: Handle = async ({ event, resolve }) => {
 		request: { headers }
 	} = event;
 
-	const useSystem = user === null || user.prefThemeMode === "system";
+	const useSystem = user === undefined || user.prefThemeMode === "system";
 
 	if (useSystem && theme.shouldRequestHeader(headers)) {
 		return new Response(null, {
@@ -32,26 +35,15 @@ const handleTheme: Handle = async ({ event, resolve }) => {
 	});
 };
 
-const handleAuth: Handle = async ({ event, resolve }) => {
-	const sessionToken = event.cookies.get(auth.sessionCookieName);
-
-	if (!sessionToken) {
-		event.locals.user = null;
-		event.locals.session = null;
-		return resolve(event);
-	}
-
-	const { session, user } = await auth.validateSessionToken(sessionToken);
+const handleBetterAuth: Handle = async ({ event, resolve }) => {
+	const session = await auth.api.getSession({ headers: event.request.headers });
 
 	if (session) {
-		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-	} else {
-		auth.deleteSessionTokenCookie(event);
+		event.locals.session = session.session;
+		event.locals.user = session.user as User;
 	}
 
-	event.locals.user = user;
-	event.locals.session = session;
-	return resolve(event);
+	return svelteKitHandler({ event, resolve, auth, building });
 };
 
-export const handle: Handle = sequence(handleAuth, handleTheme);
+export const handle = sequence(handleBetterAuth, handleTheme);

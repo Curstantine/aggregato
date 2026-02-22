@@ -5,36 +5,6 @@ import { check, index, integer, primaryKey, sqliteTable, text } from "drizzle-or
 // as drizzle externally reads this file. Only sveltekit can understand $lib aliases
 import { ContentStatus, ReleaseType } from "../../types/schema";
 
-export const user = sqliteTable("user", {
-	id: text("id").primaryKey(),
-	username: text("username").notNull().unique(),
-	email: text("email").notNull().unique(),
-	passwordHash: text("password_hash").notNull(),
-	prefThemeMode: text("pref_theme_mode", { enum: ["light", "dark", "system"] }).default("system"),
-	importLastfmUsername: text("import_lastfm_username"),
-	importListenBrainzUsername: text("import_listenbrainz_username"),
-	createdAt: integer("created_at", { mode: "timestamp" })
-		.notNull()
-		.default(sql`(unixepoch())`)
-});
-
-export const session = sqliteTable("session", {
-	id: text("id").primaryKey(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => user.id, { onDelete: "cascade" }),
-	expiresAt: integer("expires_at", { mode: "timestamp" }).notNull()
-});
-
-export const passwordResetSession = sqliteTable("password_reset_session", {
-	id: text("id").primaryKey(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => user.id, { onDelete: "cascade" }),
-	code: text("code").notNull(),
-	expiresAt: integer("expires_at", { mode: "timestamp" }).notNull()
-});
-
 export const artist = sqliteTable(
 	"artist",
 	{
@@ -46,7 +16,6 @@ export const artist = sqliteTable(
 		createdAt: integer("created_at", { mode: "timestamp" })
 			.notNull()
 			.default(sql`(unixepoch())`),
-
 		externalLastfmLink: text("external_lastfm_link").unique(),
 		externalMusicBrainzId: text("external_musicbrainz_id").unique(),
 		externalAppleMusicId: text("external_apple_music_id").unique(),
@@ -84,7 +53,6 @@ export const release = sqliteTable(
 		createdAt: integer("created_at", { mode: "timestamp" })
 			.notNull()
 			.default(sql`(unixepoch())`),
-
 		externalLastfmLink: text("external_lastfm_link").unique(),
 		externalMusicBrainzId: text("external_musicbrainz_id").unique(),
 		externalAppleMusicId: text("external_apple_music_id").unique(),
@@ -114,9 +82,8 @@ export const artistsToReleases = sqliteTable(
 	(table) => [primaryKey({ columns: [table.releaseId, table.artistId] })]
 );
 
-export type Session = typeof session.$inferSelect;
-export type PasswordResetSession = typeof passwordResetSession.$inferSelect;
-export type User = typeof user.$inferSelect;
 export type Artist = typeof artist.$inferSelect;
 export type ArtistAlias = typeof artistAlias.$inferSelect;
 export type Release = typeof artist.$inferSelect;
+
+export * from "./schema.auth";

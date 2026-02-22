@@ -1,11 +1,8 @@
-import { hash } from "@node-rs/argon2";
 import { fail, redirect } from "@sveltejs/kit";
 import { type } from "arktype";
+import { APIError } from "better-auth";
 
-import * as auth from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import * as table from "$lib/server/db/schema";
-import { generateRandomId } from "$lib/server/utils";
+import { auth } from "$lib/server/auth";
 import { arkFormParser, toSerArkErrors } from "$lib/server/validator/utils";
 
 import type { Actions, PageServerLoad } from "./$types";
@@ -18,7 +15,8 @@ const RegisterCredentials = type({
 	email: "string.email",
 	username: "3 < string.alphanumeric <= 31",
 	password: "6 < string <= 255",
-	confirmPassword: "string"
+	confirmPassword: "string",
+	remember: "boolean = false"
 }).narrow((data, ctx) => {
 	if (data.password === data.confirmPassword) return true;
 
@@ -31,7 +29,7 @@ const RegisterCredentials = type({
 
 const formRegisterCredentials = arkFormParser.pipe(RegisterCredentials);
 
-export const actions: Actions = {
+export const actions: Actions<ActionUtils.GenericFormActionData> = {
 	default: async (event) => {
 		const formData = await event.request.formData();
 		const out = formRegisterCredentials(formData);
@@ -43,31 +41,28 @@ export const actions: Actions = {
 			});
 		}
 
-		const userId = generateRandomId();
-		const passwordHash = await hash(out.password, {
-			memoryCost: 19456,
-			timeCost: 2,
-			outputLen: 32,
-			parallelism: 1
-		});
-
 		try {
-			await db.insert(table.user).values({
-				id: userId,
-				username: out.username,
-				email: out.email,
-				passwordHash,
-				createdAt: new Date()
+			await auth.api.signUpEmail({
+				body: {
+					name: out.username,
+					email: out.email,
+					password: out.password,
+					username: out.username,
+					rememberMe: out.remember,
+					callbackURL: "/"
+				}
 			});
+		} catch (error) {
+			if (error instanceof APIError) {
+				return fail(400, {
+					message: error.message ?? "Failed to register a new account",
+					invalid: undefined
+				});
+			}
 
-			const sessionToken = auth.generateSessionToken();
-			const session = await auth.createSession(sessionToken, userId);
-			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-		} catch (e) {
-			console.error(e);
-			return fail(500, { message: "An error has occurred", invalid: undefined });
+			return fail(500, { message: "Unexpected error", invalid: undefined });
 		}
 
-		redirect(302, "/");
+		return redirect(302, "/");
 	}
 };
