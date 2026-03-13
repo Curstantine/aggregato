@@ -2,19 +2,25 @@
 	import { enhance } from "$app/forms";
 
 	import { Button, Input, Label, SecretInput } from "$lib/components/form";
-	import type { FormSerArkErrors } from "$lib/server/validator/utils";
 
-	import type { ActionData, PageData } from "./$types";
+	import type { PageProps, SubmitFunction } from "./$types";
 
-	type FormActionData =
-		| { message?: string; invalid?: FormSerArkErrors }
-		| undefined; // When the form hasn't been submitted yet
+	let submitting = $state(false);
 
-	let { data, form }: { data: PageData; form: FormActionData } = $props();
+	const submit: SubmitFunction = () => {
+		submitting = true;
+
+		return async ({ update }) => {
+			await update();
+			submitting = false;
+		};
+	};
+
+	let { data, form }: PageProps = $props();
 </script>
 
 <svelte:head>
-	<title>Reset Password - Aggregato</title>
+	<title>Reset Password | Aggregato</title>
 </svelte:head>
 
 <section class="mx-auto flex min-h-svh max-w-md flex-col justify-center p-4">
@@ -23,7 +29,7 @@
 		Enter your reset token and your new password below.
 	</span>
 
-	<form method="post" use:enhance class="mt-6 space-y-3">
+	<form method="post" use:enhance={submit} class="mt-6 space-y-3">
 		<Label id="token" label="Reset Token" error={form?.invalid?.token}>
 			<Input
 				id="token"
@@ -55,9 +61,9 @@
 		</Label>
 
 		{#if form?.message}
-			<p class="text-sm text-destructive">{form.message}</p>
+			<p class="text-destructive text-sm">{form.message}</p>
 		{/if}
 
-		<Button type="submit" class="mt-2 w-full">Reset Password</Button>
+		<Button type="submit" class="mt-2 w-full" disabled={submitting}>Reset Password</Button>
 	</form>
 </section>

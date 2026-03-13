@@ -25,8 +25,8 @@ export const user = sqliteTable("user", {
 	importLastfmUsername: text("import_lastfm_username"),
 	importListenBrainzUsername: text("import_listenbrainz_username"),
 
-	unusedName: text("name"),
-	unusedImage: text("image")
+	unusedName: text("unused_name"),
+	unusedImage: text("unused_image")
 });
 
 export const session = sqliteTable(

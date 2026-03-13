@@ -1,5 +1,5 @@
 <script lang="ts">
-	import "@fontsource-variable/inter";
+	import "@fontsource-variable/ibm-plex-sans";
 	import "../app.css";
 
 	import type { LayoutProps } from "./$types";

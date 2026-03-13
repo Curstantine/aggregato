@@ -14,7 +14,7 @@
 
 	const intentStyles: Record<Intent, string> = {
 		boring: "rounded border border-border bg-background-2 shadow",
-		rosemi: "dark:border-1 border-rosemi-500 bg-rosemi-700 text-rosemi-50 shadow-glow shadow-rosemi-700/20 hover:shadow-rosemi-700/30",
+		rosemi: "dark:border-1 border-rosemi-500 bg-rosemi-700 text-rosemi-50 shadow-glow shadow-rosemi-700/20 hover:shadow-rosemi-700/30 disabled:bg-rosemi-900 disabled:shadow-rosemi-900/20 disabled:border-rosemi-700 disabled:text-rosemi-300",
 		ghost: "hover:bg-background-2",
 		border: "border border-border bg-background-2 hover:bg-background-2/50"
 	};

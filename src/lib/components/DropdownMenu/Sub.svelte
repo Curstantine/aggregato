@@ -34,7 +34,7 @@
 			"rounded text-sm shadow-lg",
 			"before:absolute before:inset-0 before:left-0 before:-z-10 before:content-normal before:rounded before:bg-background/80 before:backdrop-blur-xl dark:before:bg-background/30",
 			"[&>*:first-child]:rounded-t [&>*:last-child]:rounded-b",
-			"border border-border [&>*]:border-b [&>*]:border-b-border [&>*:last-child]:border-b-0",
+			"border border-border *:border-b *:border-b-border [&>*:last-child]:border-b-0",
 			contentProps?.class
 		]}
 	>

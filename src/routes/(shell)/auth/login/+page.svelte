@@ -3,13 +3,24 @@
 
 	import { Button, Input, Label, LabeledSeparator, SecretInput } from "$lib/components/form";
 
-	import type { PageProps } from "./$types";
+	import type { PageProps, SubmitFunction } from "./$types";
+
+	let submitting = $state(false);
+
+	const submit: SubmitFunction = () => {
+		submitting = true;
+
+		return async ({ update }) => {
+			await update();
+			submitting = false;
+		};
+	};
 
 	let { form }: PageProps = $props();
 </script>
 
 <svelte:head>
-	<title>Login - Aggregato</title>
+	<title>Login | Aggregato</title>
 </svelte:head>
 
 <section class="mx-auto flex min-h-svh max-w-md flex-col justify-center p-4">
@@ -18,7 +29,7 @@
 		Sign-in to continue, or create an account to get started
 	</span>
 
-	<form method="post" action="?/email" use:enhance class="mt-6 space-y-3">
+	<form method="post" action="?/email" use:enhance={submit} class="mt-6 space-y-3">
 		<Label id="username" label="Email/Username" error={form?.invalid?.username}>
 			<Input
 				id="username"
@@ -41,7 +52,7 @@
 			{@render link("I forgot my password", "/auth/forgot")}
 		</div>
 
-		<Button type="submit" class="mt-2 w-full">Continue</Button>
+		<Button type="submit" class="mt-2 w-full" disabled={submitting}>Continue</Button>
 	</form>
 
 	<LabeledSeparator class="my-4">Or Continue With</LabeledSeparator>

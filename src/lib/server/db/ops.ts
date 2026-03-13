@@ -1,4 +1,4 @@
-import { Column, eq, type GetColumnData, type SQLWrapper } from "drizzle-orm";
+import { eq, type Column, type GetColumnData, type SQLWrapper } from "drizzle-orm";
 
 export const eqn = <TColumn extends Column>(
 	left: TColumn,

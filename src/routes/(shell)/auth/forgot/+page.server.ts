@@ -29,7 +29,7 @@ export const actions: Actions<ActionUtils.GenericFormActionData> = {
 			await auth.api.requestPasswordReset({
 				body: {
 					email: out.email,
-					redirectTo: "/auth/reset-password"
+					redirectTo: "/auth/reset"
 				}
 			});
 		} catch (error) {

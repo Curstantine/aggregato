@@ -1,3 +1,4 @@
+import { waitUntil } from "@vercel/functions";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { betterAuth } from "better-auth/minimal";
 import { username } from "better-auth/plugins";
@@ -8,6 +9,7 @@ import { env } from "$env/dynamic/private";
 
 import { db } from "$lib/server/db";
 import * as schema from "$lib/server/db/schema";
+import { sendPasswordResetEmail } from "$lib/server/email";
 
 import { PrefThemeMode } from "$lib/types/schema";
 
@@ -18,7 +20,12 @@ export const auth = betterAuth({
 	baseURL: env.ORIGIN,
 	secret: env.BETTER_AUTH_SECRET,
 	database: drizzleAdapter(db, { provider: "sqlite", schema }),
-	emailAndPassword: { enabled: true },
+	emailAndPassword: {
+		enabled: true,
+		sendResetPassword: async ({ user, token, url }) => {
+			waitUntil(sendPasswordResetEmail(user.email, user.email, token, url));
+		}
+	},
 	socialProviders: {
 		github: {
 			clientId: env.GITHUB_AUTH_ID,

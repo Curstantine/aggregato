@@ -1,4 +1,4 @@
-import { ArkErrors, type } from "arktype";
+import { type, type ArkErrors } from "arktype";
 
 export const arkFormParser = type("FormData.parse");
 

@@ -1,12 +1,8 @@
-import { hash } from "@node-rs/argon2";
 import { fail, redirect } from "@sveltejs/kit";
 import { type } from "arktype";
-import { eq } from "drizzle-orm";
+import { APIError } from "better-auth";
 
-import * as auth from "$lib/server/auth";
-import { db } from "$lib/server/db";
-import * as table from "$lib/server/db/schema";
-import { validatePasswordResetToken } from "$lib/server/password-reset";
+import { auth } from "$lib/server/auth";
 import { arkFormParser, toSerArkErrors } from "$lib/server/validator/utils";
 
 import type { Actions, PageServerLoad } from "./$types";
@@ -44,24 +40,25 @@ export const actions: Actions = {
 			});
 		}
 
-		const userId = await validatePasswordResetToken(out.token);
-		if (!userId) {
-			return fail(400, {
-				message: "Invalid or expired reset token"
+		try {
+			const data = await auth.api.resetPassword({
+				body: {
+					token: out.token,
+					newPassword: out.password
+				}
 			});
+
+			console.log(data);
+		} catch (error) {
+			if (error instanceof APIError) {
+				return fail(400, {
+					message: error.message ?? "Failed to complete the password reset",
+					invalid: undefined
+				});
+			}
+
+			return fail(500, { message: "Unexpected error", invalid: undefined });
 		}
-
-		const passwordHash = await hash(out.password, {
-			memoryCost: 19456,
-			timeCost: 2,
-			outputLen: 32,
-			parallelism: 1
-		});
-
-		await db.transaction(async (tx) => {
-			await tx.update(table.user).set({ passwordHash }).where(eq(table.user.id, userId));
-			await tx.delete(table.session).where(eq(table.session.userId, userId));
-		});
 
 		return redirect(302, "/auth/login");
 	}

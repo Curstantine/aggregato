@@ -1,15 +1,27 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
 
+	import Content from "$lib/components/ControlGroup/Content.svelte";
 	import { Button, Input, Label, LabeledSeparator, SecretInput } from "$lib/components/form";
 
-	import type { PageProps } from "./$types";
+	import type { PageProps, SubmitFunction } from "./$types";
+
+	let submitting = $state(false);
+
+	const submit: SubmitFunction = () => {
+		submitting = true;
+
+		return async ({ update }) => {
+			await update();
+			submitting = false;
+		};
+	};
 
 	let { form }: PageProps = $props();
 </script>
 
 <svelte:head>
-	<title>Login - Aggregato</title>
+	<title>Register | Aggregato</title>
 </svelte:head>
 
 <main class="mx-auto flex min-h-svh max-w-md flex-col justify-center p-4">
@@ -18,7 +30,7 @@
 		Sign-up to get started, or login using your existing account
 	</span>
 
-	<form method="post" use:enhance class="mt-6 space-y-3">
+	<form method="post" use:enhance={submit} class="mt-6 space-y-3">
 		<Label id="email" label="Email" error={form?.invalid?.email}>
 			<Input name="email" placeholder="rosemi@randomaccessiblemail.moe" />
 		</Label>
@@ -39,7 +51,7 @@
 			<SecretInput
 				type="password"
 				name="confirmPassword"
-				placeholder="Reenter your password"
+				placeholder="Re-enter your password"
 			/>
 		</Label>
 
@@ -47,7 +59,7 @@
 			{@render link("Already have an account?", "/auth/login")}
 		</div>
 
-		<Button type="submit" class="mt-2 w-full">Continue</Button>
+		<Button type="submit" disabled={submitting} class="mt-2 w-full">Continue</Button>
 	</form>
 
 	<div class="mt-6 flex flex-col rounded border border-border p-2">

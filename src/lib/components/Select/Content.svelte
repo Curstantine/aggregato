@@ -47,11 +47,11 @@
 			sideOffset={10}
 			class={[
 				"rounded text-sm shadow-lg",
-				"max-h-[var(--bits-select-content-available-height)] w-[var(--bits-select-anchor-width)] min-w-[var(--bits-select-anchor-width)]",
+				"max-h-(--bits-select-content-available-height) w-(--bits-select-anchor-width) min-w-(--bits-select-anchor-width)",
 				"before:absolute before:inset-0 before:left-0 before:-z-10 before:content-normal before:rounded before:bg-background/80 before:backdrop-blur-xl dark:before:bg-background/30",
 				"data-[state=closed]:before:fade-out-standard-accelerate data-[state=open]:before:fade-in-standard-decelerate",
 				"[&>*:first-child>*:first-child]:rounded-t [&>*:last-child>*:last-child]:rounded-b",
-				"border border-border [&_[role='option']]:border-b [&_[role='option']]:border-b-border [&_[role='option']:last-of-type]:border-b-0",
+				"border border-border [&_[role='option']:last-of-type]:border-b-0 **:[[role='option']]:border-b **:[[role='option']]:border-b-border",
 				contentProps?.class
 			]}
 		>

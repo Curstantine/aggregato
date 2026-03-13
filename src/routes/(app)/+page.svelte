@@ -29,6 +29,10 @@
 	];
 </script>
 
+<svelte:head>
+	<title>Home | Aggregato</title>
+</svelte:head>
+
 <section
 	class="container grid grid-cols-1 gap-2 pt-4 sm:grid-cols-2 md:grid-cols-[repeat(auto-fill,--spacing(64))]"
 >

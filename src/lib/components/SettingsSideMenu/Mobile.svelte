@@ -42,11 +42,6 @@
 			</Dialog.Title>
 
 			{@render link(
-				"/settings/appearance",
-				"Appearance",
-				"material-symbols--palette-outline"
-			)}
-			{@render link(
 				"/settings/import",
 				"Import",
 				"material-symbols--cloud-download-outline-rounded"

@@ -49,7 +49,7 @@
 
 {#snippet search(klass: string)}
 	<form action="/search" class={["relative", klass]}>
-		<Input type="text" name="q" placeholder="Search" class="peer w-64 !bg-background/25" />
+		<Input type="text" name="q" placeholder="Search" class="peer w-64 bg-background/25!" />
 		<span
 			class="absolute top-1.5 right-1.5 iconify size-5 text-muted-foreground transition-colors material-symbols--search-rounded peer-focus:text-foreground"
 		></span>
@@ -74,12 +74,12 @@
 				class="group relative grid grid-cols-1 place-items-center aria-expanded:text-rosemi-500"
 			>
 				<span
-					class="iconify size-5 transition-transform material-symbols--notifications-outline-rounded group-[[aria-expanded='true']]:rotate-4"
+					class="iconify size-5 transition-transform material-symbols--notifications-outline-rounded group-aria-expanded:rotate-4"
 				></span>
 
 				<span
 					class={[
-						"absolute right-1.5 bottom-1 size-2.5 rounded-full bg-rosemi-500 opacity-0 transition-opacity group-[[aria-expanded='true']]:opacity-0",
+						"absolute right-1.5 bottom-1 size-2.5 rounded-full bg-rosemi-500 opacity-0 transition-opacity group-aria-expanded:opacity-0",
 						notificationState.data.length > 0 && "opacity-100"
 					]}
 				></span>
@@ -98,7 +98,7 @@
 					</Button>
 				{/snippet}
 			</PopoverPrimitive.Close>
-			<div class="absolute inset-x-0 top-8 z-10 h-4 bg-gradient-to-b from-background"></div>
+			<div class="absolute inset-x-0 top-8 z-10 h-4 bg-linear-to-b from-background"></div>
 		</div>
 
 		<div class="flex flex-col">
