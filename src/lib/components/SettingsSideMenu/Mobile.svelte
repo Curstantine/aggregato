@@ -42,6 +42,11 @@
 			</Dialog.Title>
 
 			{@render link(
+				"/settings/account",
+				"Account",
+				"material-symbols--person-outline-rounded"
+			)}
+			{@render link(
 				"/settings/import",
 				"Import",
 				"material-symbols--cloud-download-outline-rounded"

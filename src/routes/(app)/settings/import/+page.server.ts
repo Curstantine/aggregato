@@ -37,7 +37,6 @@ export const actions: Actions = {
 		}
 
 		const formData = await request.formData();
-		const isJSAllowed = formData.has("js-allowed");
 		const out = formImportData(formData);
 
 		if (out instanceof type.errors) {
@@ -52,7 +51,7 @@ export const actions: Actions = {
 			.set({ importLastfmUsername: out.username })
 			.where(eq(table.user.id, locals.user.id));
 
-		return { success: true, runImportLocally: isJSAllowed, type: "import-lastfm", params: out };
+		return { success: true, type: "import-lastfm", params: out };
 	},
 	listenbrainz: async ({ request, locals }) => {
 		if (!locals.user) {
@@ -63,12 +62,11 @@ export const actions: Actions = {
 		}
 
 		const formData = await request.formData();
-		const isJSAllowed = formData.has("js-allowed");
 		const out = formImportData(formData);
 
 		if (out instanceof type.errors) {
 			return fail(400, {
-				message: "Invalid lastfm data",
+				message: "Invalid listenbrainz data",
 				invalid: toSerArkErrors(out)
 			});
 		}
@@ -80,7 +78,6 @@ export const actions: Actions = {
 
 		return {
 			success: true,
-			runImportLocally: isJSAllowed,
 			type: "import-listenbrainz",
 			params: out
 		};

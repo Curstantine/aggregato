@@ -41,14 +41,14 @@ export const actions: Actions = {
 		}
 
 		try {
-			const data = await auth.api.resetPassword({
+			await auth.api.resetPassword({
 				body: {
 					token: out.token,
 					newPassword: out.password
 				}
 			});
 
-			console.log(data);
+			return redirect(302, "/auth/login");
 		} catch (error) {
 			if (error instanceof APIError) {
 				return fail(400, {
@@ -59,7 +59,5 @@ export const actions: Actions = {
 
 			return fail(500, { message: "Unexpected error", invalid: undefined });
 		}
-
-		return redirect(302, "/auth/login");
 	}
 };

@@ -9,6 +9,7 @@
 	<span class="mb-2 ml-3 text-lg font-medium">Settings</span>
 
 	<!-- {@render link("/settings/appearance", "Appearance", "material-symbols--palette-outline")} -->
+	{@render link("/settings/account", "Account", "material-symbols--person-outline-rounded")}
 	{@render link("/settings/import", "Import", "material-symbols--cloud-download-outline-rounded")}
 
 	<div class="flex-1"></div>

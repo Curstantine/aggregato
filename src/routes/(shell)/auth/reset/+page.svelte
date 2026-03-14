@@ -35,6 +35,7 @@
 				id="token"
 				name="token"
 				value={data.token ?? ""}
+				disabled={data.token !== undefined}
 				placeholder="Paste your reset token here"
 				required
 			/>
@@ -59,10 +60,6 @@
 				required
 			/>
 		</Label>
-
-		{#if form?.message}
-			<p class="text-destructive text-sm">{form.message}</p>
-		{/if}
 
 		<Button type="submit" class="mt-2 w-full" disabled={submitting}>Reset Password</Button>
 	</form>

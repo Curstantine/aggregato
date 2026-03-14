@@ -1,9 +1,5 @@
 <script lang="ts">
-	import {
-		DropdownMenu as DropdownMenuPrimitive,
-		Popover as PopoverPrimitive,
-		useId
-	} from "bits-ui";
+	import { DropdownMenu as DropdownMenuPrimitive, Popover as PopoverPrimitive } from "bits-ui";
 
 	import { resolve } from "$app/paths";
 
@@ -24,7 +20,7 @@
 
 <nav class="sticky top-0 z-50 border-b border-b-border backdrop-blur-2xl transition-colors">
 	<div class="container flex h-(--nav-height) items-center">
-		<a href="/">Aggregato</a>
+		<a href={resolve("/")}>Aggregato</a>
 
 		<div class="flex-1"></div>
 		<div
@@ -60,6 +56,7 @@
 
 {#snippet notifications()}
 	<Popover
+		bind:open={notificationState.opened}
 		contentProps={{
 			sideOffset: 16,
 			collisionPadding: 16,

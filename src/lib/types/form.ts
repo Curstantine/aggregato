@@ -1,7 +1,7 @@
 export const ImportMode = {
 	Top10: "top-10",
 	Top50: "top-50",
-	All: "all"
+	Top100: "top-100"
 } as const;
 
 export type ImportModeType = (typeof ImportMode)[keyof typeof ImportMode];

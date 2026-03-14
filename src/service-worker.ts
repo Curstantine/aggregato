@@ -129,13 +129,14 @@ async function importLastFm(username: string, mode: ImportModeType) {
 
 		const payload: ImportArtistBodyType = {
 			name: artist.name,
-			musicbrainzId: artist.mbid + "i",
+			musicbrainzId: artist.mbid,
 			lastfmUrl: artist.url,
 			cover:
 				artist.image.find((x) => x.size === "extralarge")?.["#text"] ??
 				artist.image[artist.image.length - 1]["#text"]
 		};
-		const resp = await fetch("/settings/api/import-artist", {
+
+		const resp = await fetch(`${sw.location.origin}/settings/api/import-artist`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(payload)

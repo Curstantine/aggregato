@@ -3,6 +3,7 @@
 
 	import {
 		addNotification,
+		notificationState,
 		removeNotification,
 		upsertNotification
 	} from "$lib/client/state/notification.svelte";
@@ -24,22 +25,24 @@
 	import type { PageProps, SubmitFunction } from "./$types";
 
 	const lastfmModes = [
-		{ value: ImportMode.Top10, label: "Top 10 Scrobbles" },
-		{ value: ImportMode.Top50, label: "Top 50 Scrobbles" },
-		{ value: ImportMode.All, label: "All" }
+		{ value: ImportMode.Top10, label: "Top 10 Artists" },
+		{ value: ImportMode.Top50, label: "Top 50 Artists" },
+		{ value: ImportMode.Top100, label: "Top 100 Artists" }
 	];
 
 	const listenbrainzModes = [
-		{ value: ImportMode.Top10, label: "Top 10 Listens" },
-		{ value: ImportMode.Top50, label: "Top 50 Listens" },
-		{ value: ImportMode.All, label: "All" }
+		{ value: ImportMode.Top10, label: "Top 10 Artists" },
+		{ value: ImportMode.Top50, label: "Top 50 Artists" },
+		{ value: ImportMode.Top100, label: "Top 100 Artists" }
 	];
 
-	const importAction: SubmitFunction = ({ formData, cancel }) => {
-		formData.set("js-allowed", "true");
+	let importing = $state(false);
+
+	const importAction: SubmitFunction = () => {
+		importing = true;
 
 		return async ({ result }) => {
-			if (result.type === "success" && result.data?.runImportLocally) {
+			if (result.type === "success" && result.data !== undefined) {
 				navigator.serviceWorker.controller?.postMessage({
 					type: result.data.type,
 					...result.data.params
@@ -83,18 +86,22 @@
 						});
 					}
 
+					importing = false;
 					removeNotification(noticeIdx);
 					importChannel.removeEventListener("message", listener);
 				};
 
 				importChannel.addEventListener("message", listener);
+				notificationState.opened = true;
+			} else {
+				importing = false;
 			}
 
 			await applyAction(result);
 		};
 	};
 
-	let { data, form }: PageProps = $props();
+	let { data }: PageProps = $props();
 </script>
 
 <SettingsHeader>Import</SettingsHeader>
@@ -135,7 +142,7 @@
 
 		<ControlGroupDivider />
 
-		<Button class="ml-auto" intent="boring">Import Scrobbles</Button>
+		<Button class="ml-auto" intent="boring" disabled={importing}>Import</Button>
 	</ControlGroup>
 </section>
 
@@ -175,6 +182,6 @@
 
 		<ControlGroupDivider />
 
-		<Button class="ml-auto" intent="boring">Import Listens</Button>
+		<Button class="ml-auto" intent="boring" disabled={importing}>Import</Button>
 	</ControlGroup>
 </section>

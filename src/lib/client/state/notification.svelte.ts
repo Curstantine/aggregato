@@ -6,6 +6,7 @@ type Notification = {
 };
 
 export const notificationState = $state({
+	opened: false,
 	data: [] as Notification[]
 });
 
