@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
 
-	import { Button, Input, Label, LabeledSeparator, SecretInput } from "$lib/components/form";
+	import {
+		Button,
+		Checkbox,
+		Input,
+		Label,
+		LabeledSeparator,
+		SecretInput
+	} from "$lib/components/form";
 
 	import type { PageProps, SubmitFunction } from "./$types";
 
@@ -46,6 +53,11 @@
 				placeholder="Enter a password"
 			/>
 		</Label>
+
+		<label for="remember" class="flex items-center gap-2 text-sm text-muted-foreground">
+			<Checkbox id="remember" name="remember" value="true" />
+			Remember me
+		</label>
 
 		<div class="flex justify-between">
 			{@render link("Don't have an account?", "/auth/register")}

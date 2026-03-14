@@ -157,7 +157,7 @@
 
 		<DropdownMenuPrimitive.Group>
 			<DropdownMenuItemLink
-				href={resolve("/settings/import")}
+				href={resolve("/settings/account")}
 				label="Settings"
 				icon="material-symbols--settings-outline-rounded"
 			/>
