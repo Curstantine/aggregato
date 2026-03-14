@@ -60,7 +60,7 @@
 	<form method="post" action="?/social" use:enhance class="space-y-3">
 		<input type="hidden" name="provider" value="github" />
 
-		<Button type="button" intent="border" class="w-full">
+		<Button type="submit" intent="border" class="w-full">
 			<span class="mr-1 iconify size-6 bxl--github sm:size-5"></span>
 			Github
 		</Button>

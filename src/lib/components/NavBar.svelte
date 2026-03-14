@@ -5,6 +5,8 @@
 		useId
 	} from "bits-ui";
 
+	import { resolve } from "$app/paths";
+
 	import { notificationState, removeNotification } from "$lib/client/state/notification.svelte";
 	import { setThemeMode, themeState, type ThemeMode } from "$lib/client/state/theme.svelte";
 
@@ -158,7 +160,7 @@
 
 		<DropdownMenuPrimitive.Group>
 			<DropdownMenuItemLink
-				href="/settings/appearance"
+				href={resolve("/settings/import")}
 				label="Settings"
 				icon="material-symbols--settings-outline-rounded"
 			/>
@@ -192,7 +194,7 @@
 
 		<DropdownMenuPrimitive.Group>
 			<DropdownMenuItemLink
-				href="/auth/logout"
+				href={resolve("/auth/logout")}
 				label="Logout"
 				icon="material-symbols--logout-rounded"
 			/>

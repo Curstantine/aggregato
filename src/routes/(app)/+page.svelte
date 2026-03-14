@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { resolve } from "$app/paths";
+
 	type Catalog = { title: string; description: string; linkId: string };
 	const catalogs: Catalog[] = [
 		{
@@ -49,7 +51,7 @@
 
 	{#each catalogs as catalog}
 		<a
-			href={`/settings/import#${catalog.linkId}`}
+			href={resolve(`/settings/import#${catalog.linkId}`)}
 			class="group flex flex-col rounded border border-border px-2 py-3 text-start transition-colors hover:border-rosemi-500 hover:bg-background/30 sm:py-2"
 		>
 			<span class="text-sm font-medium select-none">{catalog.title}</span>
