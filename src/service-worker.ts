@@ -138,8 +138,10 @@ async function importLastFm(username: string, mode: ImportModeType) {
 
 		const resp = await fetch(`${sw.location.origin}/settings/api/import-artist`, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(payload)
+			headers: { "Content-Type": "application/json", origin: "Aggregato" },
+			body: JSON.stringify(payload),
+			credentials: "same-origin",
+			mode: "cors"
 		});
 
 		if (!resp.ok) {

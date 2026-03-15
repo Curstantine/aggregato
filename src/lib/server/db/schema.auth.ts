@@ -14,7 +14,7 @@ export const user = sqliteTable("user", {
 		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
 		.$onUpdate(() => /* @__PURE__ */ new Date())
 		.notNull(),
-	username: text("username").unique(),
+	username: text("username").notNull().unique(),
 	displayUsername: text("display_username"),
 
 	prefThemeMode: text("pref_theme_mode", {

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { toast } from "svelte-sonner";
+
 	import { applyAction } from "$app/forms";
 
 	import {
@@ -9,6 +11,7 @@
 	} from "$lib/client/state/notification.svelte";
 	import SafeBroadcastChannel from "$lib/client/sw/broadcast";
 	import type { SwImportMessage } from "$lib/client/sw/types";
+	import { getActiveSW } from "$lib/client/sw/utils";
 
 	import { ImportMode } from "$lib/types/form";
 
@@ -43,10 +46,17 @@
 
 		return async ({ result }) => {
 			if (result.type === "success" && result.data !== undefined) {
-				navigator.serviceWorker.controller?.postMessage({
-					type: result.data.type,
-					...result.data.params
-				});
+				try {
+					const registration = await getActiveSW();
+					registration.active.postMessage({
+						type: result.data.type,
+						...result.data.params
+					});
+				} catch (e) {
+					toast.error("Failed to start the import process", {
+						description: "Service worker is not available"
+					});
+				}
 
 				const noticeIdx = addNotification({
 					label: "Import queued in the background",
@@ -95,6 +105,12 @@
 				notificationState.opened = true;
 			} else {
 				importing = false;
+			}
+
+			if (result.type === "failure" && result.data) {
+				toast.error("Failed to start the import process", {
+					description: result.data.message
+				});
 			}
 
 			await applyAction(result);

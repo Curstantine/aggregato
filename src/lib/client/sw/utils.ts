@@ -8,3 +8,11 @@ export function parseImportInput(data: any) {
 
 	return { username: data.username as string, mode: data.mode as ImportModeType };
 }
+
+export async function getActiveSW(): Promise<
+	ServiceWorkerRegistration & { active: ServiceWorker }
+> {
+	const registration = await navigator.serviceWorker.ready;
+	if (!registration.active) throw new Error("No service worker active");
+	return registration as ServiceWorkerRegistration & { active: ServiceWorker };
+}

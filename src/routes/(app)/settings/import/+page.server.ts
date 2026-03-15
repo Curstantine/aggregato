@@ -6,6 +6,8 @@ import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
 import { arkFormParser, toSerArkErrors } from "$lib/server/validator/utils";
 
+import { ImportMode } from "$lib/types/form";
+
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
@@ -23,7 +25,7 @@ export const load: PageServerLoad = async (event) => {
 	return user.at(0);
 };
 
-const ImportData = type({ username: "string", mode: "'top-10' | 'top-50' | 'all'" });
+const ImportData = type({ username: "string", mode: type.enumerated(...ImportMode.values()) });
 
 const formImportData = arkFormParser.pipe(ImportData);
 
@@ -32,7 +34,7 @@ export const actions: Actions = {
 		if (!locals.user) {
 			return fail(401, {
 				message: "You need to be logged into start an import",
-				invalid: []
+				invalid: {}
 			});
 		}
 
@@ -57,7 +59,7 @@ export const actions: Actions = {
 		if (!locals.user) {
 			return fail(401, {
 				message: "You need to be logged into start an import",
-				invalid: []
+				invalid: {}
 			});
 		}
 
