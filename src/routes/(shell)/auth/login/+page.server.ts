@@ -14,7 +14,7 @@ export const load: PageServerLoad = async (event) => {
 const LoginCredentials = type({
 	username: "string.email | (3 < string.alphanumeric <= 31)",
 	password: "6 < string <= 255",
-	remember: "boolean = false",
+	remember: type("'true' | 'false'").pipe((x) => x === "true"),
 	callbackURL: "string = '/'"
 });
 

@@ -17,6 +17,7 @@ import type { RequestHandler } from "./$types";
 export const POST: RequestHandler = async ({ request, locals }) => {
 	if (!locals.user) error(401, { message: "You need to be logged in" });
 
+	console.log("hi");
 	const body = ImportArtistBody(await request.json());
 	if (body instanceof type.errors) {
 		error(400, body.summary);
