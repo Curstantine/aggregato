@@ -1,4 +1,4 @@
-# Gemini Project Context: aggregato
+# Project Context: aggregato
 
 This document provides context for the "aggregato" project, a music aggregation and update retrieval platform.
 

@@ -7,12 +7,25 @@ import { UAParser } from "ua-parser-js";
 
 export const headerPrefersColorScheme = "Sec-CH-Prefers-Color-Scheme";
 
+const supportedCache = new Map<string, boolean>();
+
 export function shouldRequestHeader(headers: Headers) {
 	return isSupported(headers) && !hasHeader(headers);
 }
 
 export function isSupported(headers: Headers): boolean {
-	const { engine, browser } = UAParser(headers.get("user-agent") ?? "");
+	const ua = headers.get("user-agent") ?? "";
+
+	const cached = supportedCache.get(ua);
+	if (cached !== undefined) return cached;
+
+	const result = checkSupport(ua);
+	supportedCache.set(ua, result);
+	return result;
+}
+
+function checkSupport(ua: string): boolean {
+	const { engine, browser } = UAParser(ua);
 
 	// Disabling CH on mobile browsers, because none of the popular alternatives support it
 	// This is a temporary measure until we handle technically supported browsers that ignores the CH response sent to the client

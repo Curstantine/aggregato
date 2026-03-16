@@ -17,14 +17,11 @@ import type { RequestHandler } from "./$types";
 export const POST: RequestHandler = async ({ request, locals }) => {
 	if (!locals.user) error(401, { message: "You need to be logged in" });
 
-	console.log("hi");
 	const body = ImportArtistBody(await request.json());
-	if (body instanceof type.errors) {
-		error(400, body.summary);
-	}
+	if (body instanceof type.errors) error(400, body.summary);
 
 	const existing = await db
-		.select()
+		.select({ id: table.artist.id, name: table.artist.name })
 		.from(table.artist)
 		.where(
 			or(
@@ -108,7 +105,7 @@ async function handleMusicBrainz(id: string, extra: ImportArtistBodyType) {
 		}
 	});
 
-	return await db
+	return db
 		.insert(table.artist)
 		.values({
 			id: generateRandomId(),
@@ -121,5 +118,5 @@ async function handleMusicBrainz(id: string, extra: ImportArtistBodyType) {
 			externalSpotifyId: spotifyId,
 			externalDeezerId: deezerId
 		})
-		.returning();
+		.returning({ id: table.artist.id, name: table.artist.name });
 }

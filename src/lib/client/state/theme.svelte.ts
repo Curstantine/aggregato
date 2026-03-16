@@ -48,7 +48,7 @@ export function setThemeMode(mode: ThemeMode, saveToStorage = true): void {
 	_setThemeMode(mode);
 	if (!saveToStorage) return;
 
-	fetch("/settings/api/change-theme-mode", {
+	fetch("/api/settings/change-theme-mode", {
 		method: "POST",
 		body: mode,
 		headers: { Accept: "application/json" }

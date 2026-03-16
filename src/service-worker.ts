@@ -4,7 +4,7 @@
 /// <reference lib="webworker" />
 /// <reference types="../.svelte-kit/ambient.d.ts" />
 
-import { wait } from "@jabascript/core";
+import { takeIf, wait } from "@jabascript/core";
 import { createURL } from "@jabascript/query";
 
 import { build, files, version } from "$service-worker";
@@ -129,14 +129,14 @@ async function importLastFm(username: string, mode: ImportModeType) {
 
 		const payload: ImportArtistBodyType = {
 			name: artist.name,
-			musicbrainzId: artist.mbid,
+			musicbrainzId: takeIf(artist.mbid, (x) => !!x && x.trim() !== "") ?? undefined,
 			lastfmUrl: artist.url,
 			cover:
 				artist.image.find((x) => x.size === "extralarge")?.["#text"] ??
 				artist.image[artist.image.length - 1]["#text"]
 		};
 
-		const resp = await fetch(`${sw.location.origin}/settings/api/import-artist`, {
+		const resp = await fetch("/api/settings/import-artist", {
 			method: "POST",
 			headers: { "Content-Type": "application/json", origin: "Aggregato" },
 			body: JSON.stringify(payload),
