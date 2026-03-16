@@ -4,9 +4,9 @@
 	import { applyAction, enhance } from "$app/forms";
 
 	import {
-		ControlGroup,
 		ControlGroupDivider,
 		ControlGroupField,
+		ControlGroupForm,
 		ControlGroupHeader
 	} from "$lib/components/ControlGroup";
 	import { Button, Input } from "$lib/components/form";
@@ -78,7 +78,7 @@
 
 <section id="account" class="mt-4">
 	<ControlGroupHeader>Profile</ControlGroupHeader>
-	<ControlGroup method="POST" action="?/profile">
+	<ControlGroupForm method="POST" action="?/profile">
 		<ControlGroupField
 			id="displayUsername"
 			label="Display name"
@@ -95,7 +95,7 @@
 		<ControlGroupDivider />
 
 		<Button class="ml-auto" intent="boring" type="submit">Save</Button>
-	</ControlGroup>
+	</ControlGroupForm>
 </section>
 
 <section id="linked-oauth-services" class="mt-4">

@@ -2,14 +2,17 @@
 	import { Label } from "bits-ui";
 	import type { Snippet } from "svelte";
 
+	import type { SerArkError } from "$lib/server/validator/utils";
+
 	interface Props {
 		id: string;
 		label: string;
 		description?: string;
+		error?: string | SerArkError;
 		children?: Snippet;
 	}
 
-	let { id, label, description, children }: Props = $props();
+	let { id, label, description, error, children }: Props = $props();
 </script>
 
 <fieldset
@@ -22,4 +25,9 @@
 		{/if}
 	</Label.Root>
 	{@render children?.()}
+	{#if error}
+		<span id={id + "-error"} class="text-xs text-red-400">
+			{typeof error === "string" ? error : error.message}
+		</span>
+	{/if}
 </fieldset>

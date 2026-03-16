@@ -17,7 +17,7 @@
 	<label for={id}>{label}</label>
 	{@render children?.()}
 	{#if error}
-		<span class="text-xs text-red-400">
+		<span id={id + "-error"} class="text-xs text-red-400">
 			{typeof error === "string" ? error : error.message}
 		</span>
 	{/if}

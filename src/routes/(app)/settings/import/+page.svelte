@@ -16,9 +16,9 @@
 	import { ImportMode } from "$lib/types/form";
 
 	import {
-		ControlGroup,
 		ControlGroupDivider,
 		ControlGroupField,
+		ControlGroupForm,
 		ControlGroupHeader
 	} from "$lib/components/ControlGroup";
 	import { Button, Input } from "$lib/components/form";
@@ -124,7 +124,7 @@
 
 <section id="lastfm">
 	<ControlGroupHeader>Last.fm</ControlGroupHeader>
-	<ControlGroup method="POST" action="?/lastfm" submit={importAction}>
+	<ControlGroupForm method="POST" action="?/lastfm" submit={importAction}>
 		<ControlGroupField id="lastfm-username" label="Your Last.fm username">
 			<Input
 				id="lastfm-username"
@@ -159,12 +159,12 @@
 		<ControlGroupDivider />
 
 		<Button class="ml-auto" intent="boring" disabled={importing}>Import</Button>
-	</ControlGroup>
+	</ControlGroupForm>
 </section>
 
 <section id="listenbrainz" class="mt-4">
 	<ControlGroupHeader>ListenBrainz</ControlGroupHeader>
-	<ControlGroup method="POST" action="?/listenbrainz" submit={importAction}>
+	<ControlGroupForm method="POST" action="?/listenbrainz" submit={importAction}>
 		<ControlGroupField id="listenbrainz-username" label="Your ListenBrainz username">
 			<Input
 				id="listenbrainz-username"
@@ -199,5 +199,5 @@
 		<ControlGroupDivider />
 
 		<Button class="ml-auto" intent="boring" disabled={importing}>Import</Button>
-	</ControlGroup>
+	</ControlGroupForm>
 </section>
