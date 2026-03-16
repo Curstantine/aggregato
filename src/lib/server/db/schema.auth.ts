@@ -25,6 +25,11 @@ export const user = sqliteTable("user", {
 	importLastfmUsername: text("import_lastfm_username"),
 	importListenBrainzUsername: text("import_listenbrainz_username"),
 
+	role: text("role"),
+	banned: integer("banned", { mode: "boolean" }).default(false),
+	banReason: text("ban_reason"),
+	banExpires: integer("ban_expires", { mode: "timestamp_ms" }),
+
 	unusedName: text("unused_name"),
 	unusedImage: text("unused_image")
 });
@@ -45,7 +50,8 @@ export const session = sqliteTable(
 		userAgent: text("user_agent"),
 		userId: text("user_id")
 			.notNull()
-			.references(() => user.id, { onDelete: "cascade" })
+			.references(() => user.id, { onDelete: "cascade" }),
+		impersonatedBy: text("impersonated_by")
 	},
 	(table) => [index("session_userId_idx").on(table.userId)]
 );

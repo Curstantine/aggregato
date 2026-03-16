@@ -1,7 +1,7 @@
 import { waitUntil } from "@vercel/functions";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { betterAuth } from "better-auth/minimal";
-import { username } from "better-auth/plugins";
+import { admin, username } from "better-auth/plugins";
 import { sveltekitCookies } from "better-auth/svelte-kit";
 
 import { getRequestEvent } from "$app/server";
@@ -54,7 +54,7 @@ export const auth = betterAuth({
 			}
 		}
 	},
-	plugins: [username(), sveltekitCookies(getRequestEvent)]
+	plugins: [username(), admin(), sveltekitCookies(getRequestEvent)]
 });
 
 export type Session = (typeof auth.$Infer.Session)["session"];
