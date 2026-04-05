@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { DropdownMenu as DropdownMenuPrimitive, Popover as PopoverPrimitive } from "bits-ui";
+
 	import { resolve } from "$app/paths";
 
 	import { notificationState, removeNotification } from "$lib/client/state/notification.svelte";
-	import { setThemeMode, themeState } from "$lib/client/state/theme.svelte";
+	import { setThemeMode, themeState, type ThemeMode } from "$lib/client/state/theme.svelte";
 
 	import {
 		DropdownMenu,
@@ -26,8 +28,8 @@
 			data-sveltekit-preload-code="eager"
 			class="hidden space-x-2 md:block"
 		>
-			{@render link("/faq", "FAQ")}
-			{@render link("/pricing", "Pricing")}
+			{@render link(resolve("/faq"), "FAQ")}
+			{@render link(resolve("/pricing"), "Pricing")}
 		</div>
 
 		{@render search("mr-2 ml-4 hidden md:block")}
@@ -40,7 +42,7 @@
 </nav>
 
 {#snippet link(href: string, label: string)}
-	<a href={resolve(href)} class="text-sm text-foreground-2">{label}</a>
+	<a {href} class="text-sm text-foreground-2">{label}</a>
 {/snippet}
 
 {#snippet search(klass: string)}

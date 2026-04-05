@@ -2,8 +2,6 @@
 	import { enhance } from "$app/forms";
 
 	import { Button } from "$lib/components/form";
-
-	import type { PageProps } from "./$types";
 </script>
 
 <section class="mx-auto flex min-h-svh max-w-md flex-col justify-center p-4">

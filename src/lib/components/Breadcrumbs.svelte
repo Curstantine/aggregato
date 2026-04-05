@@ -1,31 +1,22 @@
 <script lang="ts">
-	import { resolve } from "$app/paths";
-
-	interface Crumb {
-		label: string;
-		href?: string;
-	}
-
-	interface Props {
-		items: Crumb[];
-	}
-
-	let { items }: Props = $props();
+	import { breadcrumbs } from "$lib/client/state/breadcrumbs.svelte";
 </script>
 
-<nav aria-label="Breadcrumb" class="mb-3 ml-3">
+<nav
+	aria-label="Breadcrumb"
+	class="flex h-9 items-center border-b border-b-border pl-4 [grid-area:breadcrumbs] md:mb-4"
+>
 	<ol class="flex items-center gap-1 text-sm">
-		{#each items as item, i (item.label)}
+		{#each breadcrumbs.crumbs as item, i (item.label)}
 			{#if i > 0}
 				<li aria-hidden="true" class="text-muted-foreground">/</li>
 			{/if}
-			{#if item.href && i < items.length - 1}
+			{#if item.href && i < breadcrumbs.crumbs.length - 1}
+				{@const { href, label } = item}
 				<li>
-					<a
-						href={resolve(item.href)}
-						class="text-muted-foreground transition-colors hover:text-foreground"
-					>
-						{item.label}
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+					<a {href} class="text-muted-foreground transition-colors hover:text-foreground">
+						{label}
 					</a>
 				</li>
 			{:else}

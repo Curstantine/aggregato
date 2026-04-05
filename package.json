@@ -24,6 +24,7 @@
 		"@eslint/js": "^10.0.1",
 		"@ianvs/prettier-plugin-sort-imports": "^4.7.1",
 		"@iconify-json/bxl": "^1.2.4",
+		"@iconify-json/line-md": "^1.2.16",
 		"@iconify-json/material-symbols": "^1.2.65",
 		"@iconify/tailwind4": "^1.2.3",
 		"@sveltejs/adapter-vercel": "^6.3.3",

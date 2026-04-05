@@ -121,7 +121,7 @@
 }
 
 @plugin "@iconify/tailwind4" {
-	prefixes: material-symbols, bxl;
+	prefixes: material-symbols, bxl, line-md;
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

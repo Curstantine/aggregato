@@ -17,7 +17,7 @@
 				{...props}
 				size="square"
 				intent="border"
-				class="absolute top-19 right-7 md:hidden"
+				class="absolute top-27 right-7 md:hidden"
 			>
 				<span class="iconify size-5 material-symbols--menu-rounded"></span>
 			</Button>
@@ -43,9 +43,9 @@
 			</Dialog.Title>
 
 			{@render link(
-				"/admin/artists",
+				resolve("/admin/artists"),
 				"Artists",
-				"material-symbols--music-note-outline-rounded"
+				"material-symbols--artist-outline-rounded"
 			)}
 
 			<div class="flex-1"></div>
@@ -60,7 +60,7 @@
 
 {#snippet link(href: string, label: string, icon: string)}
 	<a
-		href={resolve(href)}
+		{href}
 		aria-current={page.url.pathname.startsWith(href)}
 		class="grid h-9 grid-cols-[--spacing(5)_1fr] items-center gap-3 rounded px-3 text-sm transition-colors aria-current:bg-background-2"
 		onclick={() => (open = false)}

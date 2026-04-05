@@ -11,8 +11,9 @@
 		SecretInput
 	} from "$lib/components/form";
 
-	import type { PageProps, SubmitFunction } from "./$types";
 	import { authClient } from "$lib/auth-client";
+
+	import type { PageProps, SubmitFunction } from "./$types";
 
 	let submitting = $state(false);
 	const session = authClient.useSession();
@@ -64,8 +65,8 @@
 		</label>
 
 		<div class="flex justify-between">
-			{@render link("Don't have an account?", "/auth/register")}
-			{@render link("I forgot my password", "/auth/forgot")}
+			{@render link("Don't have an account?", resolve("/auth/register"))}
+			{@render link("I forgot my password", resolve("/auth/forgot"))}
 		</div>
 
 		<Button type="submit" class="mt-2 w-full" disabled={submitting}>Continue</Button>
@@ -84,7 +85,8 @@
 </section>
 
 {#snippet link(label: string, href: string)}
-	<a href={resolve(href)} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2">
+	<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+	<a {href} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2">
 		{label}
 	</a>
 {/snippet}

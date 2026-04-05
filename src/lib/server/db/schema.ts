@@ -25,6 +25,7 @@ export const artist = sqliteTable(
 	},
 	(table) => [
 		index("artist_name_idx").on(table.name),
+		index("artist_created_at_idx").on(table.createdAt),
 		check(
 			"artist_at_least_one_external_link",
 			sql`${table.externalLastfmLink} is not null or ${table.externalMusicBrainzId} is not null or ${table.externalAppleMusicId} is not null or ${table.externalYouTubeMusicId} is not null or ${table.externalSpotifyId} is not null or ${table.externalDeezerId} is not null`

@@ -1,28 +1,30 @@
 <script lang="ts">
 	import { toast } from "svelte-sonner";
+	import type { Attachment } from "svelte/attachments";
 
-	import { enhance } from "$app/forms";
+	import { applyAction, enhance } from "$app/forms";
 
-	import Breadcrumbs from "$lib/components/Breadcrumbs.svelte";
+	import { clearCrumbs, setCrumbs } from "$lib/client/state/breadcrumbs.svelte";
+
 	import {
+		ControlGroupContent,
 		ControlGroupDivider,
 		ControlGroupField,
 		ControlGroupHeader
 	} from "$lib/components/ControlGroup";
 	import { Button, Input, Label } from "$lib/components/form";
-	import { Select } from "$lib/components/Select";
+	import { Select, SelectItem } from "$lib/components/Select";
 	import SettingsHeader from "$lib/components/SettingsHeader.svelte";
 
 	import type { PageProps, SubmitFunction } from "./$types";
 
 	let { form }: PageProps = $props();
 	let submitting = $state(false);
-	let status = $state("Approved");
 
 	const submit: SubmitFunction = () => {
 		submitting = true;
 
-		return async ({ result, update }) => {
+		return async ({ result }) => {
 			submitting = false;
 
 			if (result.type === "failure" && result.data) {
@@ -31,7 +33,7 @@
 				});
 			}
 
-			await update();
+			await applyAction(result);
 		};
 	};
 
@@ -40,25 +42,26 @@
 		{ value: "Pending", label: "Pending" },
 		{ value: "Deleted", label: "Deleted" }
 	];
+
+	const headerAttach: Attachment = () => {
+		setCrumbs([
+			{ label: "Admin", href: "/admin" },
+			{ label: "Artists", href: "/admin/artists" },
+			{ label: "New" }
+		]);
+
+		return () => clearCrumbs();
+	};
 </script>
 
-<Breadcrumbs
-	items={[
-		{ label: "Admin", href: "/admin" },
-		{ label: "Artists", href: "/admin/artists" },
-		{ label: "New" }
-	]}
-/>
-<SettingsHeader>New Artist</SettingsHeader>
+<SettingsHeader {@attach headerAttach}>New Artist</SettingsHeader>
 
 <form method="POST" use:enhance={submit} class="space-y-4">
 	<section>
 		<ControlGroupHeader>Details</ControlGroupHeader>
-		<div class="space-y-3 rounded border border-border p-3">
+		<ControlGroupContent>
 			<ControlGroupField id="name" label="Name" description="The primary name of the artist.">
-				<Label id="name" label="Name" error={form?.invalid?.name}>
-					<Input id="name" name="name" placeholder="Enter artist name" required />
-				</Label>
+				<Input name="name" placeholder="Enter artist name" required />
 			</ControlGroupField>
 
 			<ControlGroupDivider />
@@ -68,40 +71,32 @@
 				label="Status"
 				description="The approval status of this artist."
 			>
-				<input type="hidden" name="status" value={status} />
-				<Select
-					type="single"
-					bind:value={status}
-					items={statusItems}
-					placeholder="Select status"
-				/>
+				<Select type="single" name="status" items={statusItems} placeholder="Select status">
+					{#each statusItems as status (status.value)}
+						<SelectItem value={status.value} label={status.label}>
+							{status.label}
+						</SelectItem>
+					{/each}
+				</Select>
 			</ControlGroupField>
-		</div>
+		</ControlGroupContent>
 	</section>
 
 	<section>
 		<ControlGroupHeader>External Links</ControlGroupHeader>
-		<div class="space-y-3 rounded border border-border p-3">
-			<p class="text-sm text-muted-foreground">
-				At least one external link or identifier is required.
-			</p>
-
+		<ControlGroupContent>
 			<ControlGroupField
 				id="externalLastfmLink"
 				label="Last.fm URL"
 				description="Full URL to the artist's Last.fm page."
+				error={form?.invalid?.externalLastfmLink}
 			>
-				<Label
+				<Input
 					id="externalLastfmLink"
-					label="Last.fm URL"
-					error={form?.invalid?.externalLastfmLink}
-				>
-					<Input
-						id="externalLastfmLink"
-						name="externalLastfmLink"
-						placeholder="https://www.last.fm/music/..."
-					/>
-				</Label>
+					name="externalLastfmLink"
+					placeholder="https://www.last.fm/music/..."
+					aria-describedby="externalLastfmLink-error"
+				/>
 			</ControlGroupField>
 
 			<ControlGroupDivider />
@@ -110,18 +105,14 @@
 				id="externalMusicBrainzId"
 				label="MusicBrainz ID"
 				description="The MusicBrainz artist UUID."
+				error={form?.invalid?.externalMusicBrainzId}
 			>
-				<Label
+				<Input
 					id="externalMusicBrainzId"
-					label="MusicBrainz ID"
-					error={form?.invalid?.externalMusicBrainzId}
-				>
-					<Input
-						id="externalMusicBrainzId"
-						name="externalMusicBrainzId"
-						placeholder="e.g. 5b11f4ce-a62d-471e-81fc-a69a8278c7da"
-					/>
-				</Label>
+					name="externalMusicBrainzId"
+					placeholder="e.g. 5b11f4ce-a62d-471e-81fc-a69a8278c7da"
+					aria-describedby="externalMusicBrainzId-error"
+				/>
 			</ControlGroupField>
 
 			<ControlGroupDivider />
@@ -130,18 +121,14 @@
 				id="externalAppleMusicId"
 				label="Apple Music ID"
 				description="The Apple Music artist numeric ID."
+				error={form?.invalid?.externalAppleMusicId}
 			>
-				<Label
+				<Input
 					id="externalAppleMusicId"
-					label="Apple Music ID"
-					error={form?.invalid?.externalAppleMusicId}
-				>
-					<Input
-						id="externalAppleMusicId"
-						name="externalAppleMusicId"
-						placeholder="e.g. 123456789"
-					/>
-				</Label>
+					name="externalAppleMusicId"
+					placeholder="e.g. 123456789"
+					aria-describedby="externalAppleMusicId-error"
+				/>
 			</ControlGroupField>
 
 			<ControlGroupDivider />
@@ -150,18 +137,14 @@
 				id="externalYouTubeMusicId"
 				label="YouTube Music ID"
 				description="The YouTube channel ID for this artist."
+				error={form?.invalid?.externalYouTubeMusicId}
 			>
-				<Label
+				<Input
 					id="externalYouTubeMusicId"
-					label="YouTube Music ID"
-					error={form?.invalid?.externalYouTubeMusicId}
-				>
-					<Input
-						id="externalYouTubeMusicId"
-						name="externalYouTubeMusicId"
-						placeholder="e.g. UCxxxxxxxxxxxxxxx"
-					/>
-				</Label>
+					name="externalYouTubeMusicId"
+					placeholder="e.g. UCxxxxxxxxxxxxxxx"
+					aria-describedby="externalYouTubeMusicId-error"
+				/>
 			</ControlGroupField>
 
 			<ControlGroupDivider />
@@ -170,18 +153,14 @@
 				id="externalSpotifyId"
 				label="Spotify ID"
 				description="The Spotify artist ID."
+				error={form?.invalid?.externalSpotifyId}
 			>
-				<Label
+				<Input
 					id="externalSpotifyId"
-					label="Spotify ID"
-					error={form?.invalid?.externalSpotifyId}
-				>
-					<Input
-						id="externalSpotifyId"
-						name="externalSpotifyId"
-						placeholder="e.g. 4Z8W4fKeB5YxbusRsdQVPb"
-					/>
-				</Label>
+					name="externalSpotifyId"
+					placeholder="e.g. 4Z8W4fKeB5YxbusRsdQVPb"
+					aria-describedby="externalSpotifyId-error"
+				/>
 			</ControlGroupField>
 
 			<ControlGroupDivider />
@@ -190,23 +169,24 @@
 				id="externalDeezerId"
 				label="Deezer ID"
 				description="The Deezer artist numeric ID."
+				error={form?.invalid?.externalDeezerId}
 			>
-				<Label
+				<Input
 					id="externalDeezerId"
-					label="Deezer ID"
-					error={form?.invalid?.externalDeezerId}
-				>
-					<Input
-						id="externalDeezerId"
-						name="externalDeezerId"
-						placeholder="e.g. 123456"
-					/>
-				</Label>
+					name="externalDeezerId"
+					placeholder="e.g. 123456"
+					aria-describedby="externalDeezerId-error"
+				/>
 			</ControlGroupField>
-		</div>
+		</ControlGroupContent>
 	</section>
 
 	<div class="flex justify-end">
-		<Button intent="rosemi" type="submit" disabled={submitting}>Create Artist</Button>
+		<Button intent="rosemi" type="submit" padding="leading" disabled={submitting}>
+			{#if submitting}
+				<span class="iconify size-4 line-md--loading-loop"></span>
+			{/if}
+			Create Artist
+		</Button>
 	</div>
 </form>

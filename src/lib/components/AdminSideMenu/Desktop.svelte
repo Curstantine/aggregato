@@ -5,7 +5,7 @@
 </script>
 
 <nav
-	class="sticky top-(--nav-top) hidden h-(--rm-screen) w-full flex-col border-r border-border py-4 pr-2 md:flex"
+	class="sticky top-(--nav-top) hidden h-(--rm-screen) w-full flex-col border-r border-border py-4 pr-2 [grid-area:sidebar] md:flex"
 >
 	<span class="mb-2 ml-3 text-lg font-medium">Admin</span>
 

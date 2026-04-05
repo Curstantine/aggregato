@@ -3,20 +3,20 @@
 
 	type Props = Omit<SelectItemProps, "child" | "class">;
 
-	let { ...rest }: Props = $props();
+	let props: Props = $props();
 </script>
 
 <Select.Item
-	{...rest}
+	{...props}
 	class="flex h-9 items-center gap-2 pr-3 pl-2 text-sm transition-colors select-none data-highlighted:bg-background-2 data-selected:bg-background-2 data-selected:text-rosemi-500 sm:h-8"
 >
-	{#snippet children(props)}
+	{#snippet children(innards)}
 		<span
 			class={[
 				"iconify size-5  transition-opacity material-symbols--check-rounded",
-				props.selected ? "opacity-100" : "opacity-0"
+				innards.selected ? "opacity-100" : "opacity-0"
 			]}
 		></span>
-		{@render children?.(props)}
+		{@render props.children?.(innards)}
 	{/snippet}
 </Select.Item>

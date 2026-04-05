@@ -4,11 +4,13 @@
 
 	type Intent = "ghost" | "rosemi" | "border" | "boring";
 	type Size = "default" | "square" | "squareSmall";
+	type Padding = "justified" | "leading" | "trailing";
 
 	type Props = ButtonRootProps & {
 		children: Snippet;
 		intent?: Intent;
 		size?: Size;
+		padding?: Padding;
 		fullyRounded?: boolean;
 	};
 
@@ -20,15 +22,24 @@
 	};
 
 	const sizeStyles: Record<Size, string> = {
-		default: "h-9 flex items-center text-center justify-center sm:h-8 px-4",
+		default: "h-9 flex items-center text-center justify-center sm:h-8",
 		square: "grid place-items-center grid-cols-1 size-9 sm:size-8",
 		squareSmall: "grid place-items-center grid-cols-1 size-7 sm:size-6"
+	};
+
+	const paddingStyles: Partial<Record<Size, Record<Padding, string>>> = {
+		default: {
+			justified: "px-4",
+			leading: "pl-3 pr-4 gap-2",
+			trailing: "pl-4 pr-3 gap-2"
+		}
 	};
 
 	const {
 		children,
 		intent = "rosemi",
 		size = "default",
+		padding = "justified",
 		fullyRounded = false,
 		class: klass,
 		...rest
@@ -42,6 +53,7 @@
 		fullyRounded ? "rounded-full" : "rounded",
 		intentStyles[intent],
 		sizeStyles[size],
+		paddingStyles[size]?.[padding],
 		klass
 	]}
 >

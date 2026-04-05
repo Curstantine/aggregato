@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { toast } from "svelte-sonner";
+	import type { Attachment } from "svelte/attachments";
 
-	import { enhance } from "$app/forms";
+	import { applyAction, enhance } from "$app/forms";
+
+	import { clearCrumbs, setCrumbs } from "$lib/client/state/breadcrumbs.svelte";
 
 	import { ContentStatus } from "$lib/types/schema";
 
-	import Breadcrumbs from "$lib/components/Breadcrumbs.svelte";
 	import {
 		ControlGroupContent,
 		ControlGroupDivider,
@@ -25,7 +27,7 @@
 	const submitUpdate: SubmitFunction = () => {
 		submitting = true;
 
-		return async ({ result, update }) => {
+		return async ({ result }) => {
 			submitting = false;
 
 			if (result.type === "failure" && result.data) {
@@ -36,14 +38,14 @@
 				toast.success("Artist updated");
 			}
 
-			await update();
+			await applyAction(result);
 		};
 	};
 
 	const submitDelete: SubmitFunction = () => {
 		deleting = true;
 
-		return async ({ result, update }) => {
+		return async ({ result }) => {
 			deleting = false;
 
 			if (result.type === "failure" && result.data) {
@@ -52,7 +54,7 @@
 				});
 			}
 
-			await update();
+			await applyAction(result);
 		};
 	};
 
@@ -61,16 +63,19 @@
 		{ value: ContentStatus.Pending, label: "Pending" },
 		{ value: ContentStatus.Deleted, label: "Deleted" }
 	];
+
+	const headerAttach: Attachment = () => {
+		setCrumbs([
+			{ label: "Admin", href: "/admin" },
+			{ label: "Artists", href: "/admin/artists" },
+			{ label: data.artist.name }
+		]);
+
+		return () => clearCrumbs();
+	};
 </script>
 
-<Breadcrumbs
-	items={[
-		{ label: "Admin", href: "/admin" },
-		{ label: "Artists", href: "/admin/artists" },
-		{ label: data.artist.name }
-	]}
-/>
-<SettingsHeader>Edit Artist</SettingsHeader>
+<SettingsHeader {@attach headerAttach}>Edit Artist</SettingsHeader>
 
 <form method="POST" action="?/update" use:enhance={submitUpdate} class="space-y-4">
 	<section>
@@ -100,7 +105,9 @@
 					placeholder="Select status"
 				>
 					{#each statusItems as status (status.value)}
-						<SelectItem value={status.value}>{status.label}</SelectItem>
+						<SelectItem value={status.value} label={status.label}>
+							{status.label}
+						</SelectItem>
 					{/each}
 				</Select>
 			</ControlGroupField>
@@ -213,7 +220,12 @@
 	</section>
 
 	<div class="flex justify-end">
-		<Button intent="rosemi" type="submit" disabled={submitting}>Save Changes</Button>
+		<Button intent="rosemi" type="submit" padding="leading" disabled={submitting}>
+			{#if submitting}
+				<span class="iconify size-4 line-md--loading-loop"></span>
+			{/if}
+			Save Changes
+		</Button>
 	</div>
 </form>
 
