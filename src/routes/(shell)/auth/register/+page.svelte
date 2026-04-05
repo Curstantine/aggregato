@@ -1,18 +1,21 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
+	import { resolve } from "$app/paths";
 
-	import Content from "$lib/components/ControlGroup/Content.svelte";
 	import { Button, Input, Label, LabeledSeparator, SecretInput } from "$lib/components/form";
 
 	import type { PageProps, SubmitFunction } from "./$types";
+	import { authClient } from "$lib/auth-client";
 
 	let submitting = $state(false);
+	const session = authClient.useSession();
 
 	const submit: SubmitFunction = () => {
 		submitting = true;
 
 		return async ({ update }) => {
 			await update();
+			await $session.refetch();
 			submitting = false;
 		};
 	};
@@ -56,7 +59,7 @@
 		</Label>
 
 		<div class="flex justify-between">
-			{@render link("Already have an account?", "/auth/login")}
+			{@render link("Already have an account?", resolve("/auth/login"))}
 		</div>
 
 		<Button type="submit" disabled={submitting} class="mt-2 w-full">Continue</Button>
@@ -84,7 +87,7 @@
 </main>
 
 {#snippet link(label: string, href: string)}
-	<a {href} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2"
-		>{label}</a
-	>
+	<a {href} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2">
+		{label}
+	</a>
 {/snippet}

@@ -11,14 +11,17 @@
 	} from "$lib/components/form";
 
 	import type { PageProps, SubmitFunction } from "./$types";
+	import { authClient } from "$lib/auth-client";
 
 	let submitting = $state(false);
+	const session = authClient.useSession();
 
 	const submit: SubmitFunction = () => {
 		submitting = true;
 
 		return async ({ update }) => {
 			await update();
+			await $session.refetch();
 			submitting = false;
 		};
 	};
