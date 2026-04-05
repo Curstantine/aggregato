@@ -1,4 +1,4 @@
-<script lang="ts" generics="Success extends {}, Failure extends {}">
+<script lang="ts" generics="Success extends Record<string, unknown>, Failure extends Record<string, unknown>">
 	import type { SubmitFunction } from "@sveltejs/kit";
 	import type { Snippet } from "svelte";
 	import type { HTMLFormAttributes } from "svelte/elements";

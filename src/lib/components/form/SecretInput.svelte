@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from "svelte/elements";
 
-	interface Props extends Omit<HTMLInputAttributes, "class"> {}
+	type Props = Omit<HTMLInputAttributes, "class">;
 	const props: Props = $props();
 
 	let showValue = $state(false);

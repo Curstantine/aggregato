@@ -59,7 +59,7 @@
 		</Label>
 
 		<div class="flex justify-between">
-			{@render link("Already have an account?", resolve("/auth/login"))}
+			{@render link("Already have an account?", "/auth/login")}
 		</div>
 
 		<Button type="submit" disabled={submitting} class="mt-2 w-full">Continue</Button>
@@ -87,7 +87,7 @@
 </main>
 
 {#snippet link(label: string, href: string)}
-	<a {href} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2">
+	<a href={resolve(href)} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2">
 		{label}
 	</a>
 {/snippet}

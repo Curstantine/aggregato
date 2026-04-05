@@ -49,7 +49,7 @@
 		</span>
 	</div>
 
-	{#each catalogs as catalog}
+	{#each catalogs as catalog (catalog.linkId)}
 		<a
 			href={resolve(`/settings/import#${catalog.linkId}`)}
 			class="group flex flex-col rounded border border-border px-2 py-3 text-start transition-colors hover:border-rosemi-500 hover:bg-background/30 sm:py-2"

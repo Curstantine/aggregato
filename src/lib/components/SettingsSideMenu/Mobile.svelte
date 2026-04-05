@@ -3,6 +3,7 @@
 
 	import { version } from "$app/environment";
 	import { page } from "$app/state";
+	import { resolve } from "$app/paths";
 
 	import { Button } from "$lib/components/form";
 
@@ -63,8 +64,7 @@
 </Dialog.Root>
 
 {#snippet link(href: string, label: string, icon: string)}
-	<a
-		{href}
+	<a href={resolve(href)}
 		aria-current={page.url.pathname === href}
 		class="grid h-9 grid-cols-[--spacing(5)_1fr] items-center gap-3 rounded px-3 text-sm transition-colors aria-current:bg-background-2"
 		onclick={() => (open = false)}

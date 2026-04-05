@@ -11,11 +11,11 @@
 			: "An unexpected error occurred while loading this page. Please try again."
 	);
 
-	const details = $derived(
-		typeof page.error === "object" && page.error && "message" in page.error
-			? String(page.error.message)
-			: null
-	);
+	// const details = $derived(
+	// 	typeof page.error === "object" && page.error && "message" in page.error
+	// 		? String(page.error.message)
+	// 		: null
+	// );
 </script>
 
 <svelte:head>

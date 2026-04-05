@@ -20,6 +20,7 @@
 </nav>
 
 {#snippet link(href: string, label: string, icon: string)}
+	<!-- eslint-disable svelte/no-navigation-without-resolve -->
 	<a
 		{href}
 		aria-current={page.url.pathname.startsWith(href)}

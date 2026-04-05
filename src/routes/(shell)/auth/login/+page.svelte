@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
+	import { resolve } from "$app/paths";
 
 	import {
 		Button,
@@ -83,7 +84,7 @@
 </section>
 
 {#snippet link(label: string, href: string)}
-	<a {href} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2">
+	<a href={resolve(href)} class="text-xs text-muted-foreground transition-colors hover:text-foreground-2">
 		{label}
 	</a>
 {/snippet}

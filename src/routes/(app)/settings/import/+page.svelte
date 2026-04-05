@@ -53,6 +53,7 @@
 						...result.data.params
 					});
 				} catch (e) {
+					console.error(e);
 					toast.error("Failed to start the import process", {
 						description: "Service worker is not available"
 					});
@@ -150,7 +151,7 @@
 				contentProps={{ sideOffset: 16 }}
 				required
 			>
-				{#each lastfmModes as mode}
+				{#each lastfmModes as mode (mode.value)}
 					<SelectItem value={mode.value} label={mode.label}>{mode.label}</SelectItem>
 				{/each}
 			</Select>
@@ -190,7 +191,7 @@
 				contentProps={{ sideOffset: 16 }}
 				required
 			>
-				{#each listenbrainzModes as mode}
+				{#each listenbrainzModes as mode (mode.value)}
 					<SelectItem value={mode.value} label={mode.label}>{mode.label}</SelectItem>
 				{/each}
 			</Select>

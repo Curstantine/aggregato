@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
-	import type { HTMLAttributes, HTMLBaseAttributes } from "svelte/elements";
+	import type { HTMLAttributes } from "svelte/elements";
 
 	interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
 		children: Snippet;

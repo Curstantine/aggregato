@@ -8,7 +8,7 @@
 		children: Snippet;
 	}
 
-	let { id, label, description, children } = $props();
+	let { id, label, description, children }: Props = $props();
 </script>
 
 <fieldset

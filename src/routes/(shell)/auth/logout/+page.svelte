@@ -4,8 +4,6 @@
 	import { Button } from "$lib/components/form";
 
 	import type { PageProps } from "./$types";
-
-	let { data }: PageProps = $props();
 </script>
 
 <section class="mx-auto flex min-h-svh max-w-md flex-col justify-center p-4">

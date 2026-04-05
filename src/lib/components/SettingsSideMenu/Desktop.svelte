@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { version } from "$app/environment";
 	import { page } from "$app/state";
+	import { resolve } from "$app/paths";
 </script>
 
 <nav
@@ -22,7 +23,7 @@
 
 {#snippet link(href: string, label: string, icon: string)}
 	<a
-		{href}
+		href={resolve(href)}
 		aria-current={page.url.pathname === href}
 		class="grid h-8 grid-cols-[--spacing(5)_1fr] items-center gap-2 rounded px-3 text-sm transition-colors aria-current:bg-background-2"
 	>

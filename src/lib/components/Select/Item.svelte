@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { Select, type SelectItemProps } from "bits-ui";
 
-	interface Props extends Omit<SelectItemProps, "child" | "class"> {
-		label: string;
-	}
+	type Props = Omit<SelectItemProps, "child" | "class">;
 
-	let { label, children, ...rest }: Props = $props();
+	let { ...rest }: Props = $props();
 </script>
 
 <Select.Item

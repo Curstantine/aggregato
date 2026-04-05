@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { DropdownMenu, type DropdownMenuRadioGroupProps } from "bits-ui";
 
-	interface Props extends Omit<DropdownMenuRadioGroupProps, "child" | "class"> {}
+	type Props = Omit<DropdownMenuRadioGroupProps, "child" | "class">;
 
 	let { children, ...rest }: Props = $props();
 </script>

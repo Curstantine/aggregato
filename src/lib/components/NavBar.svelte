@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { DropdownMenu as DropdownMenuPrimitive, Popover as PopoverPrimitive } from "bits-ui";
-
 	import { resolve } from "$app/paths";
 
 	import { notificationState, removeNotification } from "$lib/client/state/notification.svelte";
-	import { setThemeMode, themeState, type ThemeMode } from "$lib/client/state/theme.svelte";
+	import { setThemeMode, themeState } from "$lib/client/state/theme.svelte";
 
 	import {
 		DropdownMenu,
@@ -42,7 +40,7 @@
 </nav>
 
 {#snippet link(href: string, label: string)}
-	<a {href} class="text-sm text-foreground-2">{label}</a>
+	<a href={resolve(href)} class="text-sm text-foreground-2">{label}</a>
 {/snippet}
 
 {#snippet search(klass: string)}
@@ -107,7 +105,7 @@
 				</div>
 			{/if}
 
-			{#each notificationState.data as notification}
+			{#each notificationState.data as notification (notification.id)}
 				<div
 					class="group relative flex flex-col border-b border-border p-2 last:border-b-0"
 				>

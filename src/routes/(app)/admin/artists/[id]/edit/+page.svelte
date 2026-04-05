@@ -12,7 +12,7 @@
 		ControlGroupField,
 		ControlGroupHeader
 	} from "$lib/components/ControlGroup";
-	import { Button, Input, Label } from "$lib/components/form";
+	import { Button, Input } from "$lib/components/form";
 	import { Select, SelectItem } from "$lib/components/Select";
 	import SettingsHeader from "$lib/components/SettingsHeader.svelte";
 
@@ -99,10 +99,8 @@
 					items={statusItems}
 					placeholder="Select status"
 				>
-					{#each statusItems as status}
-						<SelectItem value={status.value} label={status.label}>
-							{status.label}
-						</SelectItem>
+					{#each statusItems as status (status.value)}
+						<SelectItem value={status.value}>{status.label}</SelectItem>
 					{/each}
 				</Select>
 			</ControlGroupField>

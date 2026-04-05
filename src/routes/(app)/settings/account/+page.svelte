@@ -101,7 +101,7 @@
 <section id="linked-oauth-services" class="mt-4">
 	<ControlGroupHeader>Linked OAuth Services</ControlGroupHeader>
 	<div class="rounded border border-border">
-		{#each PROVIDERS as provider, i}
+		{#each PROVIDERS as provider, i (provider.id)}
 			{@const linked = isLinked(provider.id)}
 			{@const accountId = linkedAccountId(provider.id)}
 			{@const unlinkable = canUnlink(provider.id)}
