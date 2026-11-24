@@ -1,31 +1,28 @@
-// import { readFile } from "node:fs/promises";
-// import { join as pathJoin } from "node:path";
-
+import { execSync } from "node:child_process";
+import adapter from "@sveltejs/adapter-vercel";
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 
-// async function getCerts(): Promise<{ key: string; cert: string } | undefined> {
-// 	try {
-// 		const certPath = pathJoin(__dirname, "certs");
-// 		const key = await readFile(pathJoin(certPath, "key.pem"), "utf-8");
-// 		const cert = await readFile(pathJoin(certPath, "cert.pem"), "utf-8");
-
-// 		return { key, cert };
-// 	} catch (error) {
-// 		console.error("Failed to read certificates:", error);
-// 		return undefined;
-// 	}
-// }
-
-// const certs = import.meta.env.DEV ? await getCerts() : undefined;
+function getGitRef() {
+	try {
+		return execSync("git rev-parse --short HEAD").toString().trim();
+	} catch (e) {
+		console.warn("Could not determine Git version:", e);
+		const now = new Date();
+		return `${now.getFullYear()}.${now.getMonth()}.${now.getDate()}`;
+	}
+}
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
-	server: {
-		// https: {
-		// 	key: certs?.key,
-		// 	cert: certs?.cert
-		// }
-	}
+	plugins: [
+		tailwindcss(),
+		sveltekit({
+			adapter: adapter(),
+			version: {
+				name: getGitRef()
+			}
+		})
+	],
+	server: {}
 });
